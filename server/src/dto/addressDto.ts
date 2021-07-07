@@ -1,8 +1,8 @@
-import {CallbackError, EnforceDocument, Model, ObjectId} from "mongoose";
+import mongoose, {CallbackError} from "mongoose";
 import { Address } from '../types/address.types'
 import { AddressModel } from '../models/addressModel'
 
-export const findById = async (id: ObjectId): Promise<Address> => {
+export const findById = async (id: mongoose.Types.ObjectId): Promise<Address> => {
     return new Promise((resolve, reject) => {
         AddressModel.findOne({ _id: id }, (err: CallbackError, address: Address) => {
             if(err) reject(err)
@@ -11,7 +11,7 @@ export const findById = async (id: ObjectId): Promise<Address> => {
     })
 }
 
-export const findByBabybox = async (babyboxId: ObjectId): Promise<Array<Address>> => {
+export const findByBabybox = async (babyboxId: mongoose.Types.ObjectId): Promise<Array<Address>> => {
     return new Promise((resolve, reject) => {
         AddressModel.find({ babyboxId: babyboxId }, (err: CallbackError, addresses: Array<Address>) => {
             if(err) reject(err)
@@ -47,6 +47,10 @@ export const save = async (address: Address): Promise<Address> => {
     })
 }
 
+export const updateById = async (id: mongoose.Types.ObjectId, address: Address): Promise<Address> => {
+    return update({ _id: id }, address)
+}
+
 export const update = async (query: Object, address: Address): Promise<Address> => {
     return new Promise((resolve, reject) => {
         AddressModel.updateOne(query, address, {},(err: CallbackError, res) => {
@@ -56,11 +60,15 @@ export const update = async (query: Object, address: Address): Promise<Address> 
     })
 }
 
+export const removeById = async (id: mongoose.Types.ObjectId): Promise<any> => {
+    return remove({ _id: id })
+}
+
 export const remove = async (query: Object): Promise<any> => {
     return new Promise((resolve, reject) => {
         AddressModel.deleteOne(query, {}, (err: CallbackError) => {
             if(err) reject(err)
-            resolve({})
+            resolve({ success: true })
         })
     })
 }

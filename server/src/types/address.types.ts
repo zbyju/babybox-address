@@ -6,7 +6,7 @@ export interface Address {
     titleBehind?: string,
     firstname: string,
     lastname: string,
-    sex: string,
+    sex: "male" | "female",
     firstname5: string,
     lastname5: string,
     email: string,
