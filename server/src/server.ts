@@ -3,6 +3,7 @@ import morgan from 'morgan';
 import helmet from 'helmet';
 import cors from 'cors';
 import config from '../config.json';
+import mongoose from 'mongoose'
 
 const app: Express = express();
 
@@ -24,6 +25,21 @@ if (process.env.NODE_ENV === 'development' || config.NODE_ENV === 'development')
 if (process.env.NODE_ENV === 'production' || config.NODE_ENV === 'production') {
   app.use(helmet());
 }
+
+/************************************************************************************
+ *                               Connect to MongoDb
+ ***********************************************************************************/
+
+//Connect to MongoDB
+mongoose.connect(`mongodb://${config.DATABASE.host}:${config.DATABASE.port}/${config.DATABASE.name}`,
+    config.DATABASE.options, (err) => {
+  if(err) {
+    console.log(err)
+  } else {
+    console.log("Connected to MongoDB")
+  }
+});
+mongoose.set('useCreateIndex', true);
 
 /************************************************************************************
  *                               Register all routes

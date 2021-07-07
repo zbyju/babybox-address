@@ -1,0 +1,19 @@
+{
+  "PORT": 8080,
+  "NODE_ENV": "development",
+  "DATABASE": {
+    "host": "url",
+    "port": "27017",
+    "name": "name",
+    "options": {
+      "authSource": "username",
+      "auth": {
+        "user": "username",
+        "password": "password"
+      },
+      "useNewUrlParser": true,
+      "useFindAndModify": false,
+      "useUnifiedTopology": true
+    }
+  }
+}
