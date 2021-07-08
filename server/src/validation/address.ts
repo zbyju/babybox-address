@@ -16,7 +16,6 @@ export const isAddress = (address: Object): address is Address => {
         addr.houseNumber !== undefined &&
         addr.city !== undefined &&
         addr.postcode !== undefined &&
-        addr.babyboxId !== undefined &&
         (addr.sex === "male" || addr.sex === "female")
     )
 }

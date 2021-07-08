@@ -1,14 +1,10 @@
 import mongoose, {CallbackError} from "mongoose";
 import { Address } from '../types/address.types'
 import { AddressModel } from '../models/addressModel'
+import { findById as babyboxFindById } from "./babyboxDto"
 
 export const findById = async (id: mongoose.Types.ObjectId): Promise<Address> => {
-    return new Promise((resolve, reject) => {
-        AddressModel.findOne({ _id: id }, (err: CallbackError, address: Address) => {
-            if(err) reject(err)
-            resolve(address)
-        })
-    })
+    return findOne({ _id: id })
 }
 
 export const findByBabybox = async (babyboxId: mongoose.Types.ObjectId): Promise<Array<Address>> => {
@@ -39,11 +35,19 @@ export const findOne = async (query: Object): Promise<Address> => {
 }
 
 export const save = async (address: Address): Promise<Address> => {
-    return new Promise((resolve, reject) => {
-        AddressModel.create(address, (err: CallbackError, address: Address) => {
-            if(err) reject(err)
-            resolve(address)
-        })
+    return new Promise(async (resolve, reject) => {
+        try {
+            const babybox = await babyboxFindById(address.babyboxId)
+            if(!babybox) reject({ message:"This babybox does not exist.", name: "MongoError"})
+            else {
+                AddressModel.create(address, (err: CallbackError, address: Address) => {
+                    if(err) reject(err)
+                    resolve(address)
+                })
+            }
+        } catch(err) {
+            reject({ message:"This babybox does not exist.", name: "MongoError"})
+        }
     })
 }
 
@@ -71,4 +75,15 @@ export const remove = async (query: Object): Promise<any> => {
             resolve({ success: true })
         })
     })
+}
+
+export const removeMany = async (query: Object): Promise<any> => {
+    console.log(query)
+    // return new Promise((resolve, reject) => {
+    //     AddressModel.remove(query, (err: CallbackError) => {
+    //         if(err) reject(err)
+    //         resolve({ success: true })
+    //     })
+    // })
+    return find(query)
 }

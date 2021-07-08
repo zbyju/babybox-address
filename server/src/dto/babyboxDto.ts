@@ -1,14 +1,10 @@
-import {CallbackError, ObjectId} from "mongoose";
+import { CallbackError } from "mongoose";
+import mongoose from "mongoose"
 import { Babybox } from '../types/babybox.types'
 import { BabyboxModel } from '../models/babyboxModel'
 
-export const findById = async (id: ObjectId): Promise<Babybox> => {
-    return new Promise((resolve, reject) => {
-        BabyboxModel.findOne({ _id: id }, (err: CallbackError, babybox: Babybox) => {
-            if(err) reject(err)
-            resolve(babybox)
-        })
-    })
+export const findById = async (id: mongoose.Types.ObjectId): Promise<Babybox> => {
+    return findOne({ _id: id })
 }
 
 export const find = async (query: Object = {}): Promise<Array<Babybox>> => {
@@ -38,6 +34,10 @@ export const save = async (babybox: Babybox): Promise<Babybox> => {
     })
 }
 
+export const updateById = async (id: mongoose.Types.ObjectId, babybox: Babybox): Promise<Babybox> => {
+    return update({ _id: id }, babybox)
+}
+
 export const update = async (query: Object, babybox: Babybox): Promise<Babybox> => {
     return new Promise((resolve, reject) => {
         BabyboxModel.updateOne(query, babybox, {},(err: CallbackError, res) => {
@@ -47,7 +47,7 @@ export const update = async (query: Object, babybox: Babybox): Promise<Babybox> 
     })
 }
 
-export const removeById = async (id: ObjectId): Promise<any> => {
+export const removeById = async (id: mongoose.Types.ObjectId): Promise<any> => {
     return remove({_id: id})
 }
 

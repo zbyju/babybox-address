@@ -1,9 +1,9 @@
-import { Router } from 'express';
-export const router: Router = Router();
-
-import {find, findById, findByBabybox, save, removeById, updateById} from '../dto/addressDto'
+import {Router} from 'express';
+import {find, findByBabybox, findById, removeById, save, updateById} from '../dto/addressDto'
 import mongoose from "mongoose";
-import { validateAddress } from '../validation/address'
+import {validateAddress} from '../validation/address'
+
+export const router: Router = Router();
 
 // Routes
 router.get("/", async (req, res) => {
@@ -18,8 +18,8 @@ router.get("/", async (req, res) => {
 router.get("/:addressId", async (req, res) => {
     const addressId = mongoose.Types.ObjectId(req.params.addressId)
     try {
-        const addresses = await findById(addressId)
-        return res.json({ success: true, addresses })
+        const address = await findById(addressId)
+        return res.json({ success: true, address })
     } catch(err) {
         return res.status(500).json({ success: false, error: err})
     }
@@ -36,10 +36,7 @@ router.get("/babybox/:babyboxId", async (req, res) => {
 });
 
 router.post("/:babyboxId", async (req, res) => {
-    const babyboxId = mongoose.Types.ObjectId(req.params.babyboxId)
-    if(babyboxId != req.body.babyboxId) {
-        return res.status(400).json({ success: false, error: "Babybox IDs from URL and body are not the same."})
-    }
+    req.body.babyboxId = mongoose.Types.ObjectId(req.params.babyboxId)
     const valid = validateAddress(req.body)
     if(!valid.success) {
         return res.status(201).json(valid)
