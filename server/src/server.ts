@@ -50,7 +50,7 @@ const apiAddress = require('./routes/addressRoute')
 const apiFirstname = require('./routes/firstnameRoute')
 const apiLastname = require('./routes/lastnameRoute')
 
-app.use('/babybox/', apiBabybox.router);
+app.use('/Babybox/', apiBabybox.router);
 app.use('/address/', apiAddress.router);
 app.use('/firstname/', apiFirstname.router);
 app.use('/lastname/', apiLastname.router);

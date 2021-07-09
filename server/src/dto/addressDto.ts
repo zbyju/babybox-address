@@ -38,7 +38,7 @@ export const save = async (address: Address): Promise<Address> => {
     return new Promise(async (resolve, reject) => {
         try {
             const babybox = await babyboxFindById(address.babyboxId)
-            if(!babybox) reject({ message:"This babybox does not exist.", name: "MongoError"})
+            if(!babybox) reject({ message:"This Babybox does not exist.", name: "MongoError"})
             else {
                 AddressModel.create(address, (err: CallbackError, address: Address) => {
                     if(err) reject(err)
@@ -46,7 +46,7 @@ export const save = async (address: Address): Promise<Address> => {
                 })
             }
         } catch(err) {
-            reject({ message:"This babybox does not exist.", name: "MongoError"})
+            reject({ message:"This Babybox does not exist.", name: "MongoError"})
         }
     })
 }

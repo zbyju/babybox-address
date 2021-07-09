@@ -25,7 +25,7 @@ router.get("/:addressId", async (req, res) => {
     }
 });
 
-router.get("/babybox/:babyboxId", async (req, res) => {
+router.get("/Babybox/:babyboxId", async (req, res) => {
     const babyboxId = mongoose.Types.ObjectId(req.params.babyboxId)
     try {
         const addresses = await findByBabybox(babyboxId)
