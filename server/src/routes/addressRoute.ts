@@ -39,7 +39,7 @@ router.post("/:babyboxId", async (req, res) => {
     req.body.babyboxId = mongoose.Types.ObjectId(req.params.babyboxId)
     const valid = validateAddress(req.body)
     if(!valid.success) {
-        return res.status(201).json(valid)
+        return res.status(400).json(valid)
     }
     try {
         const address = await save(req.body)

@@ -47,9 +47,13 @@ mongoose.set('useCreateIndex', true);
 
 const apiBabybox = require('./routes/babyboxRoute')
 const apiAddress = require('./routes/addressRoute')
+const apiFirstname = require('./routes/firstnameRoute')
+const apiLastname = require('./routes/lastnameRoute')
 
 app.use('/babybox/', apiBabybox.router);
 app.use('/address/', apiAddress.router);
+app.use('/firstname/', apiFirstname.router);
+app.use('/lastname/', apiLastname.router);
 
 /************************************************************************************
  *                               Express Error Handling

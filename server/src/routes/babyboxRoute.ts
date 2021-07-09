@@ -3,7 +3,7 @@ export const router: Router = Router();
 
 import { find, findById, updateById, save, removeById } from '../dto/babyboxDto'
 import mongoose from "mongoose";
-import {validateBabybox, validateFavorite} from "../validation/babybox";
+import {validateBabybox, validateFavorite, validateNote } from "../validation/babybox";
 
 // Routes
 router.get("/", async (req, res) => {
@@ -45,6 +45,21 @@ router.put("/:babyboxId/favorite", async (req, res) => {
         return res.status(400).json(valid)
     }
     const bb: any = { favorite: req.body.favorite}
+    try {
+        const babybox = await updateById(babyboxId, bb)
+        return res.json({ success: true, babybox })
+    } catch(err) {
+        return res.status(500).json({ success: false, error: err})
+    }
+});
+
+router.put("/:babyboxId/note", async (req, res) => {
+    const babyboxId = mongoose.Types.ObjectId(req.params.babyboxId)
+    const valid = validateNote(req.body.note)
+    if(!valid.success) {
+        return res.status(400).json(valid)
+    }
+    const bb: any = { note: req.body.note }
     try {
         const babybox = await updateById(babyboxId, bb)
         return res.json({ success: true, babybox })
