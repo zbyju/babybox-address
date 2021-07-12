@@ -1,4 +1,14 @@
 import {Address, FormAddressError} from "../types/address";
+import {Babybox} from "../types/babybox";
+
+export const getDefaultBabybox = (): Babybox => {
+    return {
+        name: "",
+        handle: "",
+        favorite: false,
+        note: ""
+    }
+}
 
 export const getDefaultAddress = (): Address => {
     return {

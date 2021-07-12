@@ -1,5 +1,12 @@
+import {Heading} from "@chakra-ui/react";
+import AddBabyboxForm from "../../components/Babybox/AddBabyboxForm";
+
+
 export default function Babybo() {
     return (
-        <div>Add Babybox</div>
+        <>
+            <Heading>Vytvořit Babybox</Heading>
+            <AddBabyboxForm />
+        </>
     )
 }
