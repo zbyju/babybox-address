@@ -17,12 +17,17 @@ export default function NavLink(link: NavLinkProps) {
                  bg={link.active ? "yellow.50" : "white"}
                  transition="0.5s all"
                  h="100%"
-                 px={2}
                  _hover={{
                      bg: "yellow.100",
                      color: "black",
                  }}>
-            <Center w="100%" h="100%" p={[2, 3]}>
+            <Center w="100%" h="100%" p={[2, 3]}
+                borderX="1px"
+                borderColor="transparent"
+                transition="0.5s all"
+                _hover={{
+                    borderColor: "yellow.400"
+                }}>
                 <Link href={link.link} passHref>
                     <LinkOverlay>
                         <Text fontSize="lg" ms={0}>{link.label}</Text>
