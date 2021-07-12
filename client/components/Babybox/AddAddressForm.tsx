@@ -175,8 +175,6 @@ export default function AddAddressForm({ babyboxHandle }: AddAddressFormProp) {
                 </FormControl>
             </HStack>
 
-            {JSON.stringify(address)}
-
             <HStack mt={5} justify="space-between">
                 <HStack>
                     <Button onClick={resetForm} colorScheme="red" variant="outline">Resetovat Formulář</Button>
