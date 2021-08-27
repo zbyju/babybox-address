@@ -1,4 +1,4 @@
-export default function Babybo() {
+export default function Babybox() {
     return (
         <div>Babybox</div>
     )
