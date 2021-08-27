@@ -124,13 +124,13 @@ export default function AddAddressForm({ babyboxHandle }: AddAddressFormProp) {
                     <FormErrorMessage>{errors?.lastname5.message || ""}</FormErrorMessage>
                 </FormControl>
 
-                <FormControl minW="180px" flex={1} id="titleInFront" isRequired isInvalid={errors?.titleInFront.isError}>
+                <FormControl minW="180px" flex={1} id="titleInFront" isInvalid={errors?.titleInFront.isError}>
                     <FormLabel>Titul před jménem</FormLabel>
                     <Input value={address.titleInFront} name="titleInFront" onChange={handleChange} />
                     <FormErrorMessage>{errors?.titleInFront.message || ""}</FormErrorMessage>
                 </FormControl>
 
-                <FormControl minW="180px" flex={1} id="titleBehind" isRequired isInvalid={errors?.titleBehind.isError}>
+                <FormControl minW="180px" flex={1} id="titleBehind" isInvalid={errors?.titleBehind.isError}>
                     <FormLabel>Titul za jménem</FormLabel>
                     <Input value={address.titleBehind} name="titleBehind" onChange={handleChange} />
                     <FormErrorMessage>{errors?.titleBehind.message || ""}</FormErrorMessage>
