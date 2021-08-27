@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import {find, findByBabybox, findById, removeById, save, updateById} from '../dto/addressDto'
+import {find, findByBabybox, findById, findDuplicatesCompany, findDuplicatesEmail, removeById, save, updateById} from '../dto/addressDto'
 import mongoose from "mongoose";
 import {validateAddress} from '../validation/address'
 
@@ -68,3 +68,21 @@ router.delete("/:addressId", async (req, res) => {
         return res.status(500).json(err)
     }
 });
+
+router.get("/duplicate/email/:email", async(req, res) => {
+    try {
+        const result = await findDuplicatesEmail(req.params.email)
+        return res.status(200).json(result)
+    } catch(err) {
+        return res.status(500).json(err)
+    }
+})
+
+router.get("/duplicate/company/:company", async(req, res) => {
+    try {
+        const result = await findDuplicatesCompany(req.params.company)
+        return res.status(200).json(result)
+    } catch(err) {
+        return res.status(500).json(err)
+    }
+})

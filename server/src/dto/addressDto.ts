@@ -87,3 +87,12 @@ export const removeMany = async (query: Object): Promise<any> => {
     // })
     return find(query)
 }
+
+export const findDuplicatesEmail = async (email: string): Promise<any> => {
+    return find({email})
+}
+
+export const findDuplicatesCompany = async (company: string): Promise<any> => {
+    console.log(company)
+    return find({company})
+}
