@@ -3,6 +3,7 @@ import {Babybox} from "../../types/babybox";
 import {AddIcon, ChevronLeftIcon } from "@chakra-ui/icons";
 import useStarHook from "../../hooks/useStarHook";
 import Link from 'next/link'
+import useSWR from "swr"
 
 interface BabyboxCardProps {
     babybox: Babybox
@@ -11,9 +12,14 @@ interface BabyboxCardProps {
 
 export default function BabyboxCard({ babybox, starPressed }: BabyboxCardProps) {
     const star = useStarHook(babybox, starPressed)
-    //const addressCount = Math.floor(Math.random() * 5000)
-    const addressCount = 50
+    const { data, error } = useSWR("http://localhost:8080/address/count/" + babybox._id)
     const note = babybox.note ? "Poznámka: " + babybox.note : ""
+
+    const addressCount = error ? (
+        <span>Chyba při načítaní počtu adres</span>
+    ) : !data ? (
+        <span>Načítám počet adres</span>
+    ) : <span>{data.count}</span>
 
     return (
         <Box

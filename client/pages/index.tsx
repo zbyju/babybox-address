@@ -5,8 +5,11 @@ import {Babybox} from "../types/babybox";
 import Link from "next/link"
 import {useState} from "react";
 import ListFastLinks from "../components/Other/ListFastLinks";
+import useSWR from 'swr'
+import { fetcher } from "../api/fetcher";
 
 export default function Home() {
+    // const {data, error} = useSWR("http://localhost:8080/babybox", fetcher)
     const [babyboxesTmp, setBabyboxesTmp] = useState(    [{
         name: "Praha",
         handle: "praha",
@@ -34,6 +37,13 @@ export default function Home() {
         label: "zvcx",
         link: "https://google.com"
     },]
+
+    // const babyboxesJSX = error ? (
+    //     <p>Žádné babyboxy.</p>
+    // ) : !data ? (
+    //     <p>Načítám...</p>
+    // ) : <AllBabyboxesCardList babyboxesProp={data.babyboxes} />
+    const babyboxesJSX = <AllBabyboxesCardList babyboxesProp={[]} />
     return (
         <>
             <Flex alignItems="center" mb={5}>
@@ -42,7 +52,8 @@ export default function Home() {
                     <IconButton aria-label="Přidat babybox" mt={1} size="sm" icon={<AddIcon />} />
                 </Link>
             </Flex>
-            <AllBabyboxesCardList babyboxesProp={babyboxesTmp} />
+
+            {babyboxesJSX}
 
             <ListFastLinks linksProp={fastLinks} />
         </>
