@@ -25,6 +25,15 @@ export const find = async (query: Object = {}): Promise<Array<Address>> => {
     })
 }
 
+export const count = async (query: Object = {}): Promise<number> => {
+    return new Promise((resolve, reject) => {
+        AddressModel.count(query, (err: CallbackError, count: number) => {
+            if(err) reject(err)
+            resolve(count)
+        })
+    })
+}
+
 export const findOne = async (query: Object): Promise<Address> => {
     return new Promise((resolve, reject) => {
         AddressModel.findOne(query, (err: CallbackError, name: Address) => {

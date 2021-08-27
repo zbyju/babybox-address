@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import {find, findByBabybox, findById, findDuplicatesCompany, findDuplicatesEmail, removeById, save, updateById} from '../dto/addressDto'
+import {find, count, findByBabybox, findById, findDuplicatesCompany, findDuplicatesEmail, removeById, save, updateById} from '../dto/addressDto'
 import mongoose from "mongoose";
 import {validateAddress} from '../validation/address'
 
@@ -14,6 +14,16 @@ router.get("/", async (req, res) => {
         return res.status(500).json({ success: false, error: err})
     }
 });
+
+router.get("/count/:babyboxId", async (req, res) => {
+    const babyboxId = mongoose.Types.ObjectId(req.params.babyboxId)
+    try {
+        const cnt = await count({ babyboxId })
+        return res.json({ success: true, count: cnt, babyboxId })
+    } catch(err) {
+        return res.status(500).json({ success: false, error: err})
+    }
+})
 
 router.get("/:addressId", async (req, res) => {
     const addressId = mongoose.Types.ObjectId(req.params.addressId)
