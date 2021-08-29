@@ -25,6 +25,15 @@ router.get("/:babyboxId", async (req, res) => {
     }
 });
 
+router.get("/handle/:handle", async (req, res) => {
+    try {
+        const babybox = await find({handle: req.params.handle})
+        return res.json({ success: true, babybox })
+    } catch(err) {
+        return res.status(500).json({ success: false, error: err})
+    }
+});
+
 router.post("/", async (req, res) => {
     const valid = validateBabybox(req.body)
     if(!valid.success) {
