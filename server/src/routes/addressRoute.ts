@@ -2,6 +2,7 @@ import {Router} from 'express';
 import {find, count, findByBabybox, findById, findDuplicatesCompany, findDuplicatesEmail, removeById, save, updateById} from '../dto/addressDto'
 import mongoose from "mongoose";
 import {validateAddress} from '../validation/address'
+import { findOne } from '../dto/babyboxDto';
 
 export const router: Router = Router();
 
@@ -30,6 +31,16 @@ router.get("/:addressId", async (req, res) => {
     try {
         const address = await findById(addressId)
         return res.json({ success: true, address })
+    } catch(err) {
+        return res.status(500).json({ success: false, error: err})
+    }
+});
+
+router.get("/babybox/handle/:handle", async (req, res) => {
+    try {
+        const babybox = await findOne({ handle: req.params.handle })
+        const addresses = await findByBabybox(babybox._id)
+        return res.json({ success: true, addresses })
     } catch(err) {
         return res.status(500).json({ success: false, error: err})
     }
