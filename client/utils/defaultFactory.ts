@@ -3,10 +3,13 @@ import {Babybox} from "../types/babybox";
 
 export const getDefaultBabybox = (): Babybox => {
     return {
+        _id: "",
         name: "",
         handle: "",
         favorite: false,
-        note: ""
+        note: "",
+        createdAt: new Date(),
+        updatedAt: new Date()
     }
 }
 
