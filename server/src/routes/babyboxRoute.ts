@@ -1,7 +1,7 @@
 import { Router } from 'express';
 export const router: Router = Router();
 
-import { find, findById, updateById, save, removeById } from '../dto/babyboxDto'
+import { find, findOne, findById, updateById, save, removeById } from '../dto/babyboxDto'
 import mongoose from "mongoose";
 import {validateBabybox, validateFavorite, validateNote } from "../validation/babybox";
 
@@ -27,7 +27,7 @@ router.get("/:babyboxId", async (req, res) => {
 
 router.get("/handle/:handle", async (req, res) => {
     try {
-        const babybox = await find({handle: req.params.handle})
+        const babybox = await findOne({handle: req.params.handle})
         return res.json({ success: true, babybox })
     } catch(err) {
         return res.status(500).json({ success: false, error: err})
