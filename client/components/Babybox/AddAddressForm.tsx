@@ -1,7 +1,7 @@
-import {Babybox} from "../../types/babybox";
-import {Address, FormAddressError, FormAddressItemError} from "../../types/address";
-import {getDefaultAddress, getDefaultFormErrors} from "../../utils/defaultFactory"
-import {useEffect, useState} from "react";
+import { Babybox } from "../../types/babybox";
+import { Address, FormAddressError, FormAddressItemError } from "../../types/address";
+import { getDefaultAddress, getDefaultFormErrors } from "../../utils/defaultFactory"
+import { useEffect, useState } from "react";
 import {
     Box, Button,
     FormControl,
@@ -11,7 +11,7 @@ import {
     HStack,
     Input, Progress,
     Radio,
-    RadioGroup, Circle, VStack, Flex
+    RadioGroup, Circle, VStack, Flex, useToast
 } from "@chakra-ui/react";
 import {
     calculateProgress,
@@ -20,10 +20,12 @@ import {
     isValidEmail,
     isValidFirstname,
     isValidLastname, isValidPostcode,
-    isValidStreet, isValidSex, isValidTitleInFront, isValidTitleBehind
+    isValidStreet, isValidSex, isValidTitleInFront, isValidTitleBehind, isValidAddress
 } from "../../utils/address";
 import DuplicateTable from "./DuplicateTable";
-import {CheckIcon, CloseIcon} from "@chakra-ui/icons";
+import { CheckIcon, CloseIcon } from "@chakra-ui/icons";
+import { createAddress } from "../../api/address/createAddress";
+import { getFirstname, getLastname } from "../../api/names/getName";
 
 interface AddAddressFormProp {
     babyboxHandle: string
@@ -34,6 +36,7 @@ export default function AddAddressForm({ babyboxHandle }: AddAddressFormProp) {
     const [duplicate, setDuplicate] = useState<Array<Address>>([])
     const [errors, setErrors] = useState<FormAddressError>(getDefaultFormErrors())
     const [progress, setProgress] = useState<number>(0)
+    const toast = useToast()
 
     const validationFunctions = {
         firstname: isValidFirstname,
@@ -79,14 +82,78 @@ export default function AddAddressForm({ babyboxHandle }: AddAddressFormProp) {
     const handleChange = (e: { target: { name: string; value: any; }; }) => {
         const { name, value } = e.target;
         updateAddress(name, value)
+
+        if (name === "firstname") getFirstnameCase5(value)
+        if (name === "lastname") getLastnameCase5(value)
+        if (name === "company") getCompanyDuplicates(value)
+        if (name === "email") getEmailDuplicates(value)
     };
+
+    const getFirstnameCase5 = async (name: string) => {
+        if (name === "") return
+        try {
+            const result = await getFirstname(name)
+            if (result !== null && result.case5 && result.sex) setAddress((prevAddress) => ({
+                ...prevAddress,
+                firstname5: result.case5,
+                sex: result.sex
+            }))
+        } catch (err) { console.log(err) }
+    }
+    const getLastnameCase5 = async (name: string) => {
+        if (name === "") return
+        try {
+            const result = await getLastname(name)
+            if (result !== null && result.case5 && result.sex) setAddress((prevAddress) => ({
+                ...prevAddress,
+                lastname5: result.case5,
+                sex: result.sex
+            }))
+        } catch (err) { console.log(err) }
+    }
+    const getCompanyDuplicates = async (name: string) => {
+
+    }
+    const getEmailDuplicates = async (name: string) => {
+
+    }
+
+    const submitAddress = async () => {
+        if (!isValidAddress(address)) {
+            return toast({
+                title: "Chyba při přidání adresy.",
+                description: "Adresa není validní, je nutné vyplnit všechny povinné pole.",
+                status: "error",
+                isClosable: true,
+            })
+        }
+        try {
+            const result = await createAddress(address, babyboxHandle)
+            return toast({
+                title: "Adresa úspěšně přidána.",
+                description: `Byla přidána adresa ${address.firstname} ${address.lastname} (${address.email}) - ${address.company}`,
+                status: "success",
+                isClosable: true,
+            })
+        } catch (err) {
+            console.log(err)
+            return toast({
+                title: "Při přidávání adresy se vyskytla chyba.",
+                description: `Adresa nebyla přidána - zkontrolujte, jestli není adresa duplicitní.`,
+                status: "error",
+                isClosable: true,
+            })
+        }
+    }
 
     const handleSexChange = (value: string) => updateAddress("sex", value)
     return (
         <Box>
-            <Progress colorScheme="green" size="sm" mt={5} value={progress} isAnimated/>
+            <Progress colorScheme="green" size="sm" mt={5} value={progress} isAnimated />
 
-            <HStack alignItems="flex-start" mt={4}>
+            <Heading size="md" mt={3} mb={0}>Osobní údaje</Heading>
+
+            <HStack alignItems="flex-start" mt={1}>
                 <FormControl id="firstname" isRequired isInvalid={errors?.firstname.isError}>
                     <FormLabel>Jméno</FormLabel>
                     <Input value={address.firstname} name="firstname" onChange={handleChange} />
@@ -181,7 +248,7 @@ export default function AddAddressForm({ babyboxHandle }: AddAddressFormProp) {
                     <Button onClick={resetValidation} colorScheme="yellow" variant="outline">Resetovat Validaci</Button>
                 </HStack>
                 <HStack>
-                    <Button colorScheme="green">Uložit</Button>
+                    <Button colorScheme="green" onClick={submitAddress}>Uložit</Button>
                 </HStack>
             </HStack>
 
@@ -189,7 +256,7 @@ export default function AddAddressForm({ babyboxHandle }: AddAddressFormProp) {
                 <Heading mr={2}>Duplicity</Heading>
                 {duplicate.length === 0 ?
                     <Circle size="40px" bg="green.500" color="white">
-                        <CheckIcon/>
+                        <CheckIcon />
                     </Circle>
                     :
                     <>
