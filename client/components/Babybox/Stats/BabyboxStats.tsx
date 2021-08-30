@@ -7,6 +7,7 @@ import StatsPerPeriod from "./StatsPerPeriod";
 import useSWR from "swr";
 import { getAllAddresses } from "../../../api/address/getAddresses";
 import { Address } from "../../../types/address";
+import { lastWeek, thisMonth, thisWeek, todayAddresses, yesterdayAddresses } from "../../../utils/stats";
 
 interface BabyboxStatsProp {
     babyboxHandle: string
@@ -24,17 +25,14 @@ export default function BabyboxStats({ babyboxHandle }: BabyboxStatsProp) {
             <Heading>Načítám statistiky.</Heading>
         </Flex>
     )
-    const addressesSorted = addresses.sort((adr1: Address, adr2: Address) => {
-        return adr1.createdAt > adr2.createdAt
-    })
     return (
         <Flex justify="space-between" wrap="wrap" mt={5} p={3} bg="whitesmoke" borderRadius={5} boxShadow="md">
-            <StatsPerPeriod title="Celkem" addresses={addressesSorted} />
-            <StatsPerPeriod title="Tento měsíc" addresses={addresses} />
-            <StatsPerPeriod title="Tento týden" addresses={addresses} />
-            <StatsPerPeriod title="Minulý týden" addresses={addresses} />
-            <StatsPerPeriod title="Dnes" addresses={addresses} />
-            <StatsPerPeriod title="Včera" addresses={addresses} />
+            <StatsPerPeriod title="Celkem" addresses={addresses} />
+            <StatsPerPeriod title="Tento měsíc" addresses={thisMonth(addresses)} />
+            <StatsPerPeriod title="Tento týden" addresses={thisWeek(addresses)} />
+            <StatsPerPeriod title="Minulý týden" addresses={lastWeek(addresses)} />
+            <StatsPerPeriod title="Dnes" addresses={todayAddresses(addresses)} />
+            <StatsPerPeriod title="Včera" addresses={yesterdayAddresses(addresses)} />
         </Flex>
     )
 }
