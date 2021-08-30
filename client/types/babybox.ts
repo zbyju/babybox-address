@@ -1,9 +1,9 @@
 export interface Babybox {
-    _id: string,
+    _id?: string,
     name: string,
     handle: string,
-    favorite: boolean,
+    favorite?: boolean,
     note?: string
-    createdAt: Date,
-    updatedAt: Date
+    createdAt?: Date,
+    updatedAt?: Date
 }

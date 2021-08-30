@@ -1,5 +1,5 @@
 export interface Address {
-    _id: string,
+    _id?: string,
     titleInFront?: string,
     titleBehind?: string,
     firstname: string,
@@ -12,8 +12,8 @@ export interface Address {
     street: string,
     city: string,
     postcode: string,
-    createdAt: Date,
-    updatedAt: Date,
+    createdAt?: Date,
+    updatedAt?: Date,
 }
 
 export interface FormAddressItemError {
