@@ -86,3 +86,19 @@ export const calculateProgress = (address: Address, errors: FormAddressError): n
 export const sexToCZ = (sex: "male" | "female"): string => {
     return sex === "male" ? "Muž" : "Žena"
 }
+
+function arrayUnique(array: Array<Address>) {
+    var a = array.concat();
+    for(var i=0; i<a.length; ++i) {
+        for(var j=i+1; j<a.length; ++j) {
+            if(a[i]._id === a[j]._id)
+                a.splice(j--, 1);
+        }
+    }
+
+    return a;
+}
+
+export const concatUnique = (x: Array<Address>, y: Array<Address>): Array<Address> => {
+    return arrayUnique(x.concat(y));
+}

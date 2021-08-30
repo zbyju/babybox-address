@@ -20,12 +20,13 @@ import {
     isValidEmail,
     isValidFirstname,
     isValidLastname, isValidPostcode,
-    isValidStreet, isValidSex, isValidTitleInFront, isValidTitleBehind, isValidAddress
+    isValidStreet, isValidSex, isValidTitleInFront, isValidTitleBehind, isValidAddress, concatUnique
 } from "../../utils/address";
 import DuplicateTable from "./DuplicateTable";
 import { CheckIcon, CloseIcon } from "@chakra-ui/icons";
 import { createAddress } from "../../api/address/createAddress";
 import { getFirstname, getLastname } from "../../api/names/getName";
+import { getDuplicateAddressesCompany, getDuplicateAddressesEmail } from "../../api/address/getAddresses";
 
 interface AddAddressFormProp {
     babyboxHandle: string
@@ -34,6 +35,8 @@ interface AddAddressFormProp {
 export default function AddAddressForm({ babyboxHandle }: AddAddressFormProp) {
     const [address, setAddress] = useState<Address>(getDefaultAddress())
     const [duplicate, setDuplicate] = useState<Array<Address>>([])
+    const [duplicateEmail, setDuplicateEmail] = useState<Array<Address>>([])
+    const [duplicateCompany, setDuplicateCompany] = useState<Array<Address>>([])
     const [errors, setErrors] = useState<FormAddressError>(getDefaultFormErrors())
     const [progress, setProgress] = useState<number>(0)
     const toast = useToast()
@@ -79,6 +82,10 @@ export default function AddAddressForm({ babyboxHandle }: AddAddressFormProp) {
         updateProgress(address, errors)
     }, [address])
 
+    useEffect(() => {
+        setDuplicate(concatUnique(duplicateCompany, duplicateEmail))
+    }, [duplicateCompany, duplicateEmail])
+
     const handleChange = (e: { target: { name: string; value: any; }; }) => {
         const { name, value } = e.target;
         updateAddress(name, value)
@@ -111,11 +118,25 @@ export default function AddAddressForm({ babyboxHandle }: AddAddressFormProp) {
             }))
         } catch (err) { console.log(err) }
     }
-    const getCompanyDuplicates = async (name: string) => {
-
+    const getEmailDuplicates = async (email: string) => {
+        if (email === "" || !email.includes("@")) {
+            setDuplicateEmail([])
+            return
+        }
+        try {
+            const result = await getDuplicateAddressesEmail(email)
+            if (result) setDuplicateEmail(result)
+        } catch (err) { console.log(err) }
     }
-    const getEmailDuplicates = async (name: string) => {
-
+    const getCompanyDuplicates = async (company: string) => {
+        if (company === "") {
+            setDuplicateCompany([])
+            return
+        }
+        try {
+            const result: Array<Address> = await getDuplicateAddressesCompany(company)
+            if (result) setDuplicateCompany(result)
+        } catch (err) { console.log(err) }
     }
 
     const submitAddress = async () => {
@@ -123,6 +144,14 @@ export default function AddAddressForm({ babyboxHandle }: AddAddressFormProp) {
             return toast({
                 title: "Chyba při přidání adresy.",
                 description: "Adresa není validní, je nutné vyplnit všechny povinné pole.",
+                status: "error",
+                isClosable: true,
+            })
+        }
+        if (duplicate.length > 0) {
+            return toast({
+                title: "Chyba při přidání adresy.",
+                description: "Adresa je duplicitní s jinou adresou. Je potřeba předchozí adresu nejdříve smazat, nebo tuto adresu nepřidávat.",
                 status: "error",
                 isClosable: true,
             })
@@ -252,21 +281,23 @@ export default function AddAddressForm({ babyboxHandle }: AddAddressFormProp) {
                 </HStack>
             </HStack>
 
-            <HStack mt={10} mb={6}>
-                <Heading mr={2}>Duplicity</Heading>
-                {duplicate.length === 0 ?
-                    <Circle size="40px" bg="green.500" color="white">
-                        <CheckIcon />
-                    </Circle>
-                    :
-                    <>
+            <VStack mt={10} mb={6} alignItems="flex-start">
+                <HStack justifyContent="flex-start" mb="3">
+                    <Heading mr={2}>Duplicity</Heading>
+                    {duplicate.length === 0 ?
+                        <Circle size="40px" bg="green.500" color="white">
+                            <CheckIcon />
+                        </Circle>
+                        :
                         <Circle size="40px" bg="red.500" color="white">
                             <CloseIcon />
                         </Circle>
-                        <DuplicateTable addresses={duplicate} />
-                    </>
+                    }
+                </HStack>
+                {duplicate.length !== 0 &&
+                    <DuplicateTable addresses={duplicate} />
                 }
-            </HStack>
+            </VStack>
 
         </Box>
 
