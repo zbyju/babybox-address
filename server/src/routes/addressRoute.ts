@@ -70,6 +70,25 @@ router.post("/:babyboxId", async (req, res) => {
     }
 });
 
+router.post("/handle/:handle", async (req, res) => {
+    try {
+        const babybox = await findOne({handle: req.params.handle})
+        req.body.babyboxId = babybox._id
+    } catch(err) {
+        return res.status(500).json({ success: false, error: err})
+    }
+    const valid = validateAddress(req.body)
+    if(!valid.success) {
+        return res.status(400).json(valid)
+    }
+    try {
+        const address = await save(req.body)
+        return res.status(201).json({ success: true, address })
+    } catch(err) {
+        return res.status(500).json({ success: false, error: err})
+    }
+});
+
 router.put("/:addressId", async (req, res) => {
     const addressId = mongoose.Types.ObjectId(req.params.addressId)
     try {
