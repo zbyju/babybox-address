@@ -8,3 +8,21 @@ export const getAllAddresses = async (handle: string) => {
       return []
     }
 }
+
+export const getDuplicateAddressesEmail = async (email: string) => {
+  try {
+    const result = await getRequest<any>("address/duplicate/email/" + email)
+    return result
+  } catch(err) {
+    return []
+  }
+}
+
+export const getDuplicateAddressesCompany = async (company: string) => {
+  try {
+    const result = await getRequest<any>("address/duplicate/company/" + company)
+    return result
+  } catch(err) {
+    return []
+  }
+}
