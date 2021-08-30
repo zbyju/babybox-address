@@ -13,7 +13,6 @@ export const isAddress = (address: Object): address is Address => {
         addr.email !== undefined &&
         addr.company !== undefined &&
         addr.street !== undefined &&
-        addr.houseNumber !== undefined &&
         addr.city !== undefined &&
         addr.postcode !== undefined &&
         (addr.sex === "male" || addr.sex === "female")

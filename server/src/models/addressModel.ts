@@ -13,7 +13,6 @@ const schema = new Schema<Address>({
     email: { type: String, required: true, unique: true, index: true },
     company: { type: String, required: true, unique: true, index: true },
     street: { type: String, required: true},
-    houseNumber: { type: String, required: true},
     city: { type: String, required: true},
     postcode: { type: String, required: true},
     babyboxId: { type: Schema.Types.ObjectId, ref: 'Babybox', index: true }

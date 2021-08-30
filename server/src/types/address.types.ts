@@ -12,7 +12,6 @@ export interface Address {
     email: string,
     company: string,
     street: string,
-    houseNumber: string,
     city: string,
     postcode: string,
     babyboxId: PopulatedDoc<Babybox & Document>,
