@@ -1,7 +1,7 @@
-import {Babybox} from "../../types/babybox";
-import {Address, FormAddressError, FormAddressItemError} from "../../types/address";
-import {getDefaultAddress, getDefaultBabybox, getDefaultFormErrors} from "../../utils/defaultFactory"
-import {useEffect, useState} from "react";
+import { Babybox } from "../../types/babybox";
+import { Address, FormAddressError, FormAddressItemError } from "../../types/address";
+import { getDefaultAddress, getDefaultBabybox, getDefaultFormErrors } from "../../utils/defaultFactory"
+import { useEffect, useState } from "react";
 import {
     Box, Button,
     FormControl,
@@ -11,10 +11,13 @@ import {
     HStack,
     Input, Progress,
     Radio,
-    RadioGroup, Circle, VStack, Flex, Textarea, Spacer
+    RadioGroup, Circle, VStack, Flex, Textarea, Spacer, useToast
 } from "@chakra-ui/react";
+import { createBabybox } from "../../api/babybox/createBabybox";
+import React from "react";
 
 export default function AddBabyboxForm() {
+    const toast = useToast()
     const [babybox, setBabybox] = useState(getDefaultBabybox())
     const [errors, setErrors] = useState({
         name: {
@@ -29,7 +32,7 @@ export default function AddBabyboxForm() {
             [name]: value
         }));
         // Change this if more validation is added
-        if(name === "name" && value === "") {
+        if (name === "name" && value === "") {
             setErrors({
                 name: {
                     isError: true,
@@ -43,6 +46,21 @@ export default function AddBabyboxForm() {
         const { name, value } = e.target;
         updateBabybox(name, value)
     };
+
+    const submitBabybox = async () => {
+        try {
+            const result = await createBabybox(babybox)
+            return toast({
+                title: "Babybox vytvořen.",
+                description: `Byl vytvořen babybox s názvem ${babybox.name}.`,
+                status: "success",
+                duration: 9000,
+                isClosable: true,
+            })
+        } catch (err) {
+            console.error(err)
+        }
+    }
 
     return (
         <Box>
@@ -59,7 +77,7 @@ export default function AddBabyboxForm() {
                 </FormControl>
             </VStack>
             <Flex mt={5} justifyContent="flex-end">
-                <Button colorScheme="green">Uložit</Button>
+                <Button colorScheme="green" onClick={submitBabybox}>Uložit</Button>
             </Flex>
         </Box>
 
