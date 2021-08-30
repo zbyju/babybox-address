@@ -6,6 +6,7 @@ import Link from 'next/link'
 import StatsPerPeriod from "./StatsPerPeriod";
 import useSWR from "swr";
 import { getAllAddresses } from "../../../api/address/getAddresses";
+import { Address } from "../../../types/address";
 
 interface BabyboxStatsProp {
     babyboxHandle: string
@@ -13,7 +14,17 @@ interface BabyboxStatsProp {
 
 export default function BabyboxStats({ babyboxHandle }: BabyboxStatsProp) {
     const { data: addresses, error } = useSWR("addresses/babybox/handle" + babyboxHandle, () => getAllAddresses(babyboxHandle))
-    const addressesSorted = addresses.sort((adr1, adr2) => {
+    if (error) return (
+        <Flex justify="space-between" wrap="wrap" mt={5} p={3} bg="whitesmoke" borderRadius={5} boxShadow="md">
+            <Heading>Chyba při načítání statistik.</Heading>
+        </Flex>
+    )
+    if (!addresses) return (
+        <Flex justify="space-between" wrap="wrap" mt={5} p={3} bg="whitesmoke" borderRadius={5} boxShadow="md">
+            <Heading>Načítám statistiky.</Heading>
+        </Flex>
+    )
+    const addressesSorted = addresses.sort((adr1: Address, adr2: Address) => {
         return adr1.createdAt > adr2.createdAt
     })
     return (
