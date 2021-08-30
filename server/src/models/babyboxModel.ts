@@ -17,7 +17,7 @@ schema.pre('save', function(next) {
 });
 
 schema.pre('deleteOne', async function(next) {
-    const test = await removeMany({ babyboxId: mongoose.Types.ObjectId(this.getFilter()["_id"])})
+    const test = await removeMany({ babyboxId: mongoose.Types.ObjectId((this as any).getFilter()["_id"])})
     console.log(test)
     next();
 });
