@@ -16,6 +16,17 @@ router.get("/", async (req, res) => {
     }
 });
 
+router.get("/count/handle/:handle", async (req, res) => {
+    try {
+        const babybox = await findOne({handle: req.params.handle})
+        const cnt = await count({ babyboxId: babybox._id})
+        console.log(cnt)
+        return res.json({ success: true, count: cnt })
+    } catch(err) {
+        return res.status(500).json({ success: false, error: err})
+    }
+})
+
 router.get("/count/:babyboxId", async (req, res) => {
     const babyboxId = mongoose.Types.ObjectId(req.params.babyboxId)
     try {
