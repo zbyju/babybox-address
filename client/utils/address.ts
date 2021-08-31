@@ -10,8 +10,7 @@ export const isValidAddress = (address: Address): boolean => {
         address.city !== "" &&
         address.postcode !== "" &&
         address.company !== "" &&
-        address.email !== "" &&
-        address.email.includes("@")
+        (address.email === "" || address.email.includes("@"))
     )
 }
 
@@ -60,21 +59,20 @@ export const isValidPostcode = (postcode: string): FormAddressItemError => {
 }
 
 export const isValidEmail = (email: string): FormAddressItemError => {
+    if(email === "") return { isError: false }
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if(email === "") return { isError: true, message: "Email je prázdný." }
     if(!re.test(email)) return { isError: true, message: "Email je ve špatném formátu." }
     else return { isError: false }
 }
 
 export const calculateProgress = (address: Address, errors: FormAddressError): number => {
-    const split = 100 / 9 // 100 divided by #fields that has to be filled in
+    const split = 100 / 8 // 100 divided by #fields that has to be filled in
     let result = 0
 
     if(address.firstname !== "" && !errors.firstname.isError) result += split
     if(address.lastname !== "" && !errors.lastname.isError) result += split
     if(address.firstname5 !== "" && !errors.firstname5.isError) result += split
     if(address.lastname5 !== "" && !errors.lastname5.isError) result += split
-    if(address.email !== "" && !errors.email.isError) result += split
     if(address.company !== "" && !errors.company.isError) result += split
     if(address.street !== "" && !errors.street.isError) result += split
     if(address.city !== "" && !errors.city.isError) result += split

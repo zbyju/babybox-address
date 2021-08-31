@@ -9,7 +9,7 @@ export interface Address {
     sex: "male" | "female",
     firstname5: string,
     lastname5: string,
-    email: string,
+    email?: string,
     company: string,
     street: string,
     city: string,

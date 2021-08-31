@@ -242,7 +242,7 @@ export default function AddAddressForm({ babyboxHandle }: AddAddressFormProp) {
                     <FormErrorMessage>{errors?.company.message || ""}</FormErrorMessage>
                 </FormControl>
 
-                <FormControl id="email" isRequired isInvalid={errors?.email.isError}>
+                <FormControl id="email" isInvalid={errors?.email.isError}>
                     <FormLabel>Email</FormLabel>
                     <Input value={address.email} name="email" onChange={handleChange} />
                     <FormErrorMessage>{errors?.email.message || ""}</FormErrorMessage>

@@ -10,7 +10,7 @@ const schema = new Schema<Address>({
     sex: { type: String, required: true},
     firstname5: { type: String, required: true},
     lastname5: { type: String, required: true},
-    email: { type: String, required: true, unique: true, index: true },
+    email: { type: String, unique: true, index: true },
     company: { type: String, required: true, unique: true, index: true },
     street: { type: String, required: true},
     city: { type: String, required: true},
