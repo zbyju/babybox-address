@@ -22,7 +22,7 @@ import {
     isValidLastname, isValidPostcode,
     isValidStreet, isValidSex, isValidTitleInFront, isValidTitleBehind, isValidAddress, concatUnique
 } from "../../utils/address";
-import DuplicateTable from "./DuplicateTable";
+import AddressTable from "./AddressTable";
 import { CheckIcon, CloseIcon } from "@chakra-ui/icons";
 import { createAddress } from "../../api/address/createAddress";
 import { getFirstname, getLastname } from "../../api/names/getName";
@@ -295,7 +295,7 @@ export default function AddAddressForm({ babyboxHandle }: AddAddressFormProp) {
                     }
                 </HStack>
                 {duplicate.length !== 0 &&
-                    <DuplicateTable addresses={duplicate} />
+                    <AddressTable addresses={duplicate} />
                 }
             </VStack>
 
