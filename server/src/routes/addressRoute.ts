@@ -3,6 +3,7 @@ import {find, count, findByBabybox, findById, findDuplicatesCompany, findDuplica
 import mongoose from "mongoose";
 import {validateAddress} from '../validation/address'
 import { findOne } from '../dto/babyboxDto';
+import { duplicatesUnique } from '../utils/address';
 
 export const router: Router = Router();
 
@@ -36,7 +37,23 @@ router.get("/count/:babyboxId", async (req, res) => {
     }
 })
 
+router.get(["/duplicate/:handle/:company/:email",
+            "/duplicate/:handle//:email",
+            "/duplicate/:handle/:company/",
+            "/duplicate/:handle//"], async(req, res) => {
+    try {
+        const babybox = await findOne({handle: req.params.handle})
+        const dupCompany = req.params.company ? await findDuplicatesCompany(babybox._id, req.params.company) : []
+        const dupEmail = req.params.email ? await findDuplicatesEmail(babybox._id, req.params.email) : []
+        const duplicates = duplicatesUnique(dupCompany, dupEmail)
+        return res.status(200).json(duplicates)
+    } catch(err) {
+        return res.status(500).json(err)
+    }
+})
+
 router.get("/:addressId", async (req, res) => {
+    console.log('sadf')
     const addressId = mongoose.Types.ObjectId(req.params.addressId)
     try {
         const address = await findById(addressId)
@@ -118,21 +135,3 @@ router.delete("/:addressId", async (req, res) => {
         return res.status(500).json(err)
     }
 });
-
-router.get("/duplicate/email/:email", async(req, res) => {
-    try {
-        const result = await findDuplicatesEmail(req.params.email)
-        return res.status(200).json(result)
-    } catch(err) {
-        return res.status(500).json(err)
-    }
-})
-
-router.get("/duplicate/company/:company", async(req, res) => {
-    try {
-        const result = await findDuplicatesCompany(req.params.company)
-        return res.status(200).json(result)
-    } catch(err) {
-        return res.status(500).json(err)
-    }
-})
