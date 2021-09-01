@@ -14,7 +14,7 @@ interface BabyboxStatsProp {
 }
 
 export default function BabyboxStats({ babyboxHandle }: BabyboxStatsProp) {
-    const { data: addresses, error } = useSWR("addresses/babybox/handle" + babyboxHandle, () => getAllAddresses(babyboxHandle))
+    const { data: addresses, error } = useSWR("/address/babybox/handle/" + babyboxHandle)
     if (error) return (
         <Flex justify="space-between" wrap="wrap" mt={5} p={3} bg="whitesmoke" borderRadius={5} boxShadow="md">
             <Heading>Chyba při načítání statistik.</Heading>
