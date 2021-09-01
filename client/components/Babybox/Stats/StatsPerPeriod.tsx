@@ -24,7 +24,6 @@ export default function StatsLastPeriod({ title, addresses }: StatsLastPeriodPro
     const hours = end.diff(start, "hours")
     //Substract time not in work from the hours (min is 1 to not divide by 0)
     const time = Math.max(days > 1 ? hours - ((24 - hoursPerDay) * days) : hours, 1)
-    console.log(time)
     return (
         <Stat flex={0} minW="135px">
             <StatLabel>{title}</StatLabel>
