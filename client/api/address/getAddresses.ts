@@ -29,6 +29,5 @@ export const getDuplicateAddressesCompany = async (company: string) => {
 
 export const getAddressCount = async (handle: string) => {
   const result = await getRequest<any>("address/count/handle/" + handle)
-  console.log(result, handle)
   return result.count
 }
