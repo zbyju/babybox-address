@@ -10,11 +10,16 @@ export const find = async (query: Object = {}, model: Model<Name>): Promise<Arra
     })
 }
 
-export const findOne = async (query: Object, model: Model<Name>): Promise<Name> => {
+export const findOne = async (query: Object, model: Model<Name>): Promise<Name | {}> => {
     return new Promise((resolve, reject) => {
         model.find(query, (err: CallbackError, names: Array<Name>) => {
             if(err) reject(err)
-            resolve(names.sort((a, b) => b.count - a.count)[0])
+            console.log(names)
+            if(names === undefined){
+                resolve({})
+            } else {
+                resolve(names.sort((a, b) => b.count - a.count)[0])
+            }
         })
     })
 }

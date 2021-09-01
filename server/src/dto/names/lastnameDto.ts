@@ -8,11 +8,11 @@ export const find = async (query: Object = {}): Promise<Array<Name>> => {
     return commonFind(query, LastnameModel)
 }
 
-export const findById = async (id: ObjectId): Promise<Name> => {
+export const findById = async (id: ObjectId): Promise<Name | {}> => {
     return commonFindOne({ _id: id }, LastnameModel)
 }
 
-export const findByName = async (name: string): Promise<Name> => {
+export const findByName = async (name: string): Promise<Name | {}> => {
     return commonFindOne({ case1: name }, LastnameModel)
 }
 
