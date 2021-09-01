@@ -1,6 +1,6 @@
 import { config } from "../config"
 
-export async function getRequest<T>(url: string): Promise<T> {
+export async function getRequest<T>(url: string): Promise<T | {}> {
   return fetch(config.api.baseUrl + url, {
     method: "GET",
     headers : {
@@ -15,6 +15,9 @@ export async function getRequest<T>(url: string): Promise<T> {
     })
     .then(data => {
       return data
+    })
+    .catch(err => {
+      return {}
     })
 }
 
