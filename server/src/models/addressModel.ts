@@ -3,18 +3,18 @@ import { Address } from '../types/address.types'
 import {Babybox} from "../types/babybox.types";
 
 const schema = new Schema<Address>({
-    titleInFront: String,
-    titleBehind: String,
-    firstname: { type: String, required: true},
-    lastname: { type: String, required: true},
+    titleInFront: {type: String, trim: true},
+    titleBehind: {type: String, trim: true},
+    firstname: { type: String, required: true, trim: true},
+    lastname: { type: String, required: true, trim: true},
     sex: { type: String, required: true},
-    firstname5: { type: String, required: true},
-    lastname5: { type: String, required: true},
-    email: { type: String, unique: true, index: true },
-    company: { type: String, required: true, unique: true, index: true },
-    street: { type: String, required: true},
-    city: { type: String, required: true},
-    postcode: { type: String, required: true},
+    firstname5: { type: String, required: true, trim: true},
+    lastname5: { type: String, required: true, trim: true},
+    email: { type: String, unique: true, index: true, sparse: true, trim: true },
+    company: { type: String, required: true, unique: true, index: true, trim: true },
+    street: { type: String, required: true, trim: true},
+    city: { type: String, required: true, trim: true},
+    postcode: { type: String, required: true, trim: true},
     babyboxId: { type: Schema.Types.ObjectId, ref: 'Babybox', index: true }
 }, { timestamps: true });
 
