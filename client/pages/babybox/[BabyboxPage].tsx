@@ -11,7 +11,7 @@ import Link from "next/link"
 export default function BabyboxPage() {
     const router = useRouter();
     const { BabyboxPage: handle } = Array.isArray(router.query) ? router.query[0] : router.query
-    const { data: babybox, } = useSWR("babybox/handle/" + handle, () => getBabyboxByHandle(handle))
+    const { data: babybox, } = useSWR("/babybox/handle/" + handle)
     return (
         <>
             <Heading>Babybox {babybox?.name ? babybox.name : handle}</Heading>
