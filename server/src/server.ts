@@ -38,7 +38,7 @@ mongoose.connect(`mongodb://${config.DATABASE.host}:${config.DATABASE.port}/${co
     console.log(err)
   } else {
     console.log("Connected to MongoDB")
-    saveNames()
+    // saveNames()
   }
 });
 mongoose.set('useCreateIndex', true);
