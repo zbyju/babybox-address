@@ -45,6 +45,7 @@ export const findOne = async (query: Object): Promise<Address> => {
 
 export const save = async (address: Address): Promise<Address> => {
     return new Promise(async (resolve, reject) => {
+        if(!address.email || address.email === "") delete address.email
         try {
             const babybox = await babyboxFindById(address.babyboxId)
             if(!babybox) reject({ message:"This Babybox does not exist.", name: "MongoError"})
@@ -97,11 +98,10 @@ export const removeMany = async (query: Object): Promise<any> => {
     return find(query)
 }
 
-export const findDuplicatesEmail = async (email: string): Promise<any> => {
-    return find({email})
+export const findDuplicatesEmail = async (babyboxId: mongoose.Types.ObjectId, email: string): Promise<any> => {
+    return find({babyboxId, email})
 }
 
-export const findDuplicatesCompany = async (company: string): Promise<any> => {
-    console.log(company)
-    return find({company})
+export const findDuplicatesCompany = async (babyboxId: mongoose.Types.ObjectId, company: string): Promise<any> => {
+    return find({babyboxId, company})
 }
