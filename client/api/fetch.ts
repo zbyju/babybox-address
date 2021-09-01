@@ -18,7 +18,7 @@ export async function getRequest<T>(url: string): Promise<T> {
     })
 }
 
-export async function apiRequest<T>(url: string, method: "POST"|"PUT"|"DELETE", data: any): Promise<T> {
+export async function apiRequest<T>(url: string, method: "POST"|"PUT"|"DELETE", data: any = {}): Promise<T> {
   return new Promise(async (resolve, reject) => {
     await fetch(config.api.baseUrl + url, {
       method,
