@@ -7,7 +7,7 @@ import AddAddressForm from "../../../../components/Babybox/AddAddressForm"
 export default function AddAddress() {
     const router = useRouter();
     const { AddAddress: handle } = Array.isArray(router.query) ? router.query[0] : router.query
-    const { data, error } = useSWR("address/count/handle/" + handle)
+    const { data, error } = useSWR("/address/count/handle/" + handle)
 
     const addressCountJSX = error ? (
         <Heading size="md">Chyba při načítání počtu adres</Heading>
