@@ -100,3 +100,9 @@ function arrayUnique(array: Array<Address>) {
 export const concatUnique = (x: Array<Address>, y: Array<Address>): Array<Address> => {
     return arrayUnique(x.concat(y));
 }
+
+export const prettyShortAddress = (address?: Address): string => {
+    if(!address) return ""
+    const emailString = address.email ? `(${address.email})` : " "
+    return `${address.firstname} ${address.lastname} ${emailString}- ${address.company}`
+}
