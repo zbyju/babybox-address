@@ -1,6 +1,6 @@
-import {Box, Button, ButtonGroup, Center, Flex, Heading, Text} from "@chakra-ui/react";
-import {Babybox} from "../../types/babybox";
-import {AddIcon, ChevronLeftIcon } from "@chakra-ui/icons";
+import { Box, Button, ButtonGroup, Center, Flex, Heading, Text } from "@chakra-ui/react";
+import { Babybox } from "../../types/babybox";
+import { AddIcon, ChevronLeftIcon } from "@chakra-ui/icons";
 import useStarHook from "../../hooks/useStarHook";
 import Link from 'next/link'
 import useSWR from "swr"
@@ -12,7 +12,7 @@ interface BabyboxCardProps {
 
 export default function BabyboxCard({ babybox, starPressed }: BabyboxCardProps) {
     const star = useStarHook(babybox, starPressed)
-    const { data, error } = useSWR("http://localhost:8080/address/count/" + babybox._id)
+    const { data, error } = useSWR("/address/count/" + babybox._id)
     const note = babybox.note ? "Poznámka: " + babybox.note : ""
 
     const addressCount = error ? (
@@ -32,11 +32,11 @@ export default function BabyboxCard({ babybox, starPressed }: BabyboxCardProps) 
                 <Heading fontSize="2xl" mb={1}>{babybox.name}</Heading>
                 {star}
             </Flex>
-            <Text>Počet adres: { addressCount }</Text>
+            <Text>Počet adres: {addressCount}</Text>
             <Text>{note}</Text>
             <ButtonGroup mt={3} colorScheme="blue" spacing="2" size="sm" color="white">
                 <Link href={`/babybox/${encodeURIComponent(babybox.handle)}`}>
-                    <Button bg="blue.900" pl={0} leftIcon={<ChevronLeftIcon w={6} h={6}/>}>
+                    <Button bg="blue.900" pl={0} leftIcon={<ChevronLeftIcon w={6} h={6} />}>
                         Otevřít
                     </Button>
                 </Link>
