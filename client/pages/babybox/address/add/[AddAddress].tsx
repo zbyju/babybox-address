@@ -7,13 +7,13 @@ import AddAddressForm from "../../../../components/Babybox/AddAddressForm"
 export default function AddAddress() {
     const router = useRouter();
     const { AddAddress: handle } = Array.isArray(router.query) ? router.query[0] : router.query
-    const { data: addressCount, error } = useSWR("address/count/handle/" + handle, () => getAddressCount(handle))
+    const { data, error } = useSWR("address/count/handle/" + handle)
 
     const addressCountJSX = error ? (
         <Heading size="md">Chyba při načítání počtu adres</Heading>
-    ) : (!addressCount && addressCount !== 0) ? (
+    ) : (!data) ? (
         <Heading size="md">Načítám počet adres...</Heading>
-    ) : (<Heading size="md">Počet adres: {addressCount}</Heading>)
+    ) : (<Heading size="md">Počet adres: {data.count}</Heading>)
     return (
         <>
             <HStack justify="space-between">
