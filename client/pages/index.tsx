@@ -14,14 +14,11 @@ export default function Home() {
         link: "https://google.com"
     }, {
         label: "Justice",
-        link: "https://justice.cz"
+        link: "https://or.justice.cz/ias/ui/rejstrik-$firma"
     }, {
-        label: "Test",
-        link: "https://google.com"
-    }, {
-        label: "zvcx",
-        link: "https://google.com"
-    },]
+        label: "Živé firmy",
+        link: "https://www.zivefirmy.cz/"
+    }]
     return (
         <>
             <Flex alignItems="center" mb={5}>
