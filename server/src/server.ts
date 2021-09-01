@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import cors from 'cors';
 import config from '../config.json';
 import mongoose from 'mongoose'
+import { saveNames } from './utils/saveNames';
 
 const app: Express = express();
 
@@ -37,6 +38,7 @@ mongoose.connect(`mongodb://${config.DATABASE.host}:${config.DATABASE.port}/${co
     console.log(err)
   } else {
     console.log("Connected to MongoDB")
+    saveNames()
   }
 });
 mongoose.set('useCreateIndex', true);
