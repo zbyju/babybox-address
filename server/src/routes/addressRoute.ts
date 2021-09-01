@@ -10,7 +10,7 @@ export const router: Router = Router();
 router.get("/", async (req, res) => {
     try {
         const addresses = await find({})
-        return res.json({ success: true, addresses })
+        return res.json(addresses)
     } catch(err) {
         return res.status(500).json({ success: false, error: err})
     }
@@ -20,8 +20,7 @@ router.get("/count/handle/:handle", async (req, res) => {
     try {
         const babybox = await findOne({handle: req.params.handle})
         const cnt = await count({ babyboxId: babybox._id})
-        console.log(cnt)
-        return res.json({ success: true, count: cnt })
+        return res.json({count: cnt})
     } catch(err) {
         return res.status(500).json({ success: false, error: err})
     }
@@ -31,7 +30,7 @@ router.get("/count/:babyboxId", async (req, res) => {
     const babyboxId = mongoose.Types.ObjectId(req.params.babyboxId)
     try {
         const cnt = await count({ babyboxId })
-        return res.json({ success: true, count: cnt, babyboxId })
+        return res.json({ count: cnt })
     } catch(err) {
         return res.status(500).json({ success: false, error: err})
     }
@@ -41,7 +40,7 @@ router.get("/:addressId", async (req, res) => {
     const addressId = mongoose.Types.ObjectId(req.params.addressId)
     try {
         const address = await findById(addressId)
-        return res.json({ success: true, address })
+        return res.json(address)
     } catch(err) {
         return res.status(500).json({ success: false, error: err})
     }
@@ -51,7 +50,7 @@ router.get("/babybox/handle/:handle", async (req, res) => {
     try {
         const babybox = await findOne({ handle: req.params.handle })
         const addresses = await findByBabybox(babybox._id)
-        return res.json({ success: true, addresses })
+        return res.json(addresses)
     } catch(err) {
         return res.status(500).json({ success: false, error: err})
     }
@@ -61,7 +60,7 @@ router.get("/Babybox/:babyboxId", async (req, res) => {
     const babyboxId = mongoose.Types.ObjectId(req.params.babyboxId)
     try {
         const addresses = await findByBabybox(babyboxId)
-        return res.json({ success: true, addresses })
+        return res.json(addresses)
     } catch(err) {
         return res.status(500).json({ success: false, error: err})
     }
@@ -75,7 +74,7 @@ router.post("/:babyboxId", async (req, res) => {
     }
     try {
         const address = await save(req.body)
-        return res.status(201).json({ success: true, address })
+        return res.status(201).json(address)
     } catch(err) {
         return res.status(500).json({ success: false, error: err})
     }
@@ -94,7 +93,7 @@ router.post("/handle/:handle", async (req, res) => {
     }
     try {
         const address = await save(req.body)
-        return res.status(201).json({ success: true, address })
+        return res.status(201).json(address)
     } catch(err) {
         return res.status(500).json({ success: false, error: err})
     }

@@ -9,7 +9,7 @@ import {validateBabybox, validateFavorite, validateNote } from "../validation/ba
 router.get("/", async (req, res) => {
     try {
         const babyboxes = await find({})
-        return res.json({ success: true, babyboxes })
+        return res.json(babyboxes)
     } catch(err) {
         return res.status(500).json({ success: false, error: err})
     }
@@ -19,7 +19,7 @@ router.get("/:babyboxId", async (req, res) => {
     const babyboxId = mongoose.Types.ObjectId(req.params.babyboxId)
     try {
         const babybox = await findById(babyboxId)
-        return res.json({ success: true, babybox })
+        return res.json(babybox)
     } catch(err) {
         return res.status(500).json({ success: false, error: err})
     }
@@ -28,7 +28,7 @@ router.get("/:babyboxId", async (req, res) => {
 router.get("/handle/:handle", async (req, res) => {
     try {
         const babybox = await findOne({handle: req.params.handle})
-        return res.json({ success: true, babybox })
+        return res.json(babybox)
     } catch(err) {
         return res.status(500).json({ success: false, error: err})
     }
@@ -41,7 +41,7 @@ router.post("/", async (req, res) => {
     }
     try {
         const babybox = await save(req.body)
-        return res.status(201).json({ success: true, babybox })
+        return res.status(201).json(babybox)
     } catch(err) {
         return res.status(500).json({ success: false, error: err})
     }
@@ -56,7 +56,7 @@ router.put("/:babyboxId/favorite", async (req, res) => {
     const bb: any = { favorite: req.body.favorite}
     try {
         const babybox = await updateById(babyboxId, bb)
-        return res.json({ success: true, babybox })
+        return res.json(babybox)
     } catch(err) {
         return res.status(500).json({ success: false, error: err})
     }
@@ -71,7 +71,7 @@ router.put("/:babyboxId/note", async (req, res) => {
     const bb: any = { note: req.body.note }
     try {
         const babybox = await updateById(babyboxId, bb)
-        return res.json({ success: true, babybox })
+        return res.json(babybox)
     } catch(err) {
         return res.status(500).json({ success: false, error: err})
     }
