@@ -11,7 +11,11 @@ import {
     HStack,
     Input, Progress,
     Radio,
-    RadioGroup, Circle, VStack, Flex, useToast
+    RadioGroup, Circle, VStack, Flex, useToast,
+    Alert,
+    AlertIcon,
+    AlertTitle,
+    AlertDescription
 } from "@chakra-ui/react";
 import {
     calculateProgress,
@@ -20,13 +24,14 @@ import {
     isValidEmail,
     isValidFirstname,
     isValidLastname, isValidPostcode,
-    isValidStreet, isValidSex, isValidTitleInFront, isValidTitleBehind, isValidAddress, concatUnique
+    isValidStreet, isValidSex, isValidTitleInFront, isValidTitleBehind, isValidAddress, concatUnique, prettyShortAddress
 } from "../../utils/address";
 import AddressTable from "./AddressTable";
-import { CheckIcon, CloseIcon } from "@chakra-ui/icons";
+import { CheckIcon, CloseIcon, WarningTwoIcon } from "@chakra-ui/icons";
 import { createAddress } from "../../api/address/createAddress";
 import { getFirstname, getLastname } from "../../api/names/getName";
-import { getDuplicateAddressesCompany, getDuplicateAddressesEmail } from "../../api/address/getAddresses";
+import useSWR, { mutate, trigger } from "swr";
+import { triggerAddressesOfHandle, triggerDuplicates } from "../../api/triggers";
 
 interface AddAddressFormProp {
     babyboxHandle: string
@@ -34,9 +39,7 @@ interface AddAddressFormProp {
 
 export default function AddAddressForm({ babyboxHandle }: AddAddressFormProp) {
     const [address, setAddress] = useState<Address>(getDefaultAddress())
-    const [duplicate, setDuplicate] = useState<Array<Address>>([])
-    const [duplicateEmail, setDuplicateEmail] = useState<Array<Address>>([])
-    const [duplicateCompany, setDuplicateCompany] = useState<Array<Address>>([])
+    const { data: duplicates, error: duplicateError } = useSWR(`/address/duplicate/${babyboxHandle}/${address.company}/${address.email}`)
     const [errors, setErrors] = useState<FormAddressError>(getDefaultFormErrors())
     const [progress, setProgress] = useState<number>(0)
     const toast = useToast()
@@ -82,18 +85,12 @@ export default function AddAddressForm({ babyboxHandle }: AddAddressFormProp) {
         updateProgress(address, errors)
     }, [address])
 
-    useEffect(() => {
-        setDuplicate(concatUnique(duplicateCompany, duplicateEmail))
-    }, [duplicateCompany, duplicateEmail])
-
     const handleChange = (e: { target: { name: string; value: any; }; }) => {
         const { name, value } = e.target;
         updateAddress(name, value)
 
         if (name === "firstname") getFirstnameCase5(value)
         if (name === "lastname") getLastnameCase5(value)
-        if (name === "company") getCompanyDuplicates(value)
-        if (name === "email") getEmailDuplicates(value)
     };
 
     const getFirstnameCase5 = async (name: string) => {
@@ -118,26 +115,6 @@ export default function AddAddressForm({ babyboxHandle }: AddAddressFormProp) {
             }))
         } catch (err) { console.log(err) }
     }
-    const getEmailDuplicates = async (email: string) => {
-        if (email === "" || !email.includes("@")) {
-            setDuplicateEmail([])
-            return
-        }
-        try {
-            const result = await getDuplicateAddressesEmail(email)
-            if (result) setDuplicateEmail(result)
-        } catch (err) { console.log(err) }
-    }
-    const getCompanyDuplicates = async (company: string) => {
-        if (company === "") {
-            setDuplicateCompany([])
-            return
-        }
-        try {
-            const result: Array<Address> = await getDuplicateAddressesCompany(company)
-            if (result) setDuplicateCompany(result)
-        } catch (err) { console.log(err) }
-    }
 
     const submitAddress = async () => {
         if (!isValidAddress(address)) {
@@ -148,7 +125,7 @@ export default function AddAddressForm({ babyboxHandle }: AddAddressFormProp) {
                 isClosable: true,
             })
         }
-        if (duplicate.length > 0) {
+        if (duplicates?.length > 0) {
             return toast({
                 title: "Chyba při přidání adresy.",
                 description: "Adresa je duplicitní s jinou adresou. Je potřeba předchozí adresu nejdříve smazat, nebo tuto adresu nepřidávat.",
@@ -158,9 +135,11 @@ export default function AddAddressForm({ babyboxHandle }: AddAddressFormProp) {
         }
         try {
             const result = await createAddress(address, babyboxHandle)
+            triggerDuplicates(babyboxHandle, address.company, address.email)
+            resetForm()
             return toast({
                 title: "Adresa úspěšně přidána.",
-                description: `Byla přidána adresa ${address.firstname} ${address.lastname} (${address.email}) - ${address.company}`,
+                description: `Byla přidána adresa ${prettyShortAddress(address)}`,
                 status: "success",
                 isClosable: true,
             })
@@ -174,6 +153,32 @@ export default function AddAddressForm({ babyboxHandle }: AddAddressFormProp) {
             })
         }
     }
+
+    const duplicateIconJSX = duplicateError ? (
+        <Circle size="40px" bg="yellow.400" color="white">
+            <WarningTwoIcon />
+        </Circle>
+    ) : (!duplicates || duplicates.length === 0) ? (
+        <Circle size="40px" bg="green.500" color="white">
+            <CheckIcon />
+        </Circle>
+    ) : (
+        <Circle size="40px" bg="red.500" color="white">
+            <CloseIcon />
+        </Circle>
+    )
+
+    const duplicateContentJSX = duplicateError ? (
+        <Alert status="error" mb="3">
+            <AlertIcon />
+            <AlertTitle mr={2}>Chyba při načítání duplicit.</AlertTitle>
+            <AlertDescription>Zkuste stránku obnovit, pokud problém přetrvává, pak je problém se serverem.</AlertDescription>
+        </Alert>
+    ) : (!duplicates) ? (
+        <></>
+    ) : (duplicates && duplicates.length > 0) ? (
+        <AddressTable addresses={duplicates || null} handle={babyboxHandle} address={address} />
+    ) : (<></>)
 
     const handleSexChange = (value: string) => updateAddress("sex", value)
     return (
@@ -284,19 +289,9 @@ export default function AddAddressForm({ babyboxHandle }: AddAddressFormProp) {
             <VStack mt={10} mb={6} alignItems="flex-start">
                 <HStack justifyContent="flex-start" mb="3">
                     <Heading mr={2}>Duplicity</Heading>
-                    {duplicate.length === 0 ?
-                        <Circle size="40px" bg="green.500" color="white">
-                            <CheckIcon />
-                        </Circle>
-                        :
-                        <Circle size="40px" bg="red.500" color="white">
-                            <CloseIcon />
-                        </Circle>
-                    }
+                    {duplicateIconJSX}
                 </HStack>
-                {duplicate.length !== 0 &&
-                    <AddressTable addresses={duplicate} />
-                }
+                {duplicateContentJSX}
             </VStack>
 
         </Box>
