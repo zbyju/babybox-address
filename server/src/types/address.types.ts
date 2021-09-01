@@ -2,6 +2,7 @@ import { Document, PopulatedDoc } from 'mongoose'
 import { Babybox } from "./babybox.types";
 
 export interface Address {
+    _id?: string,
     titleInFront?: string,
     titleBehind?: string,
     firstname: string,
