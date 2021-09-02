@@ -15,7 +15,12 @@ const schema = new Schema<Address>({
     street: { type: String, required: true, trim: true},
     city: { type: String, required: true, trim: true},
     postcode: { type: String, required: true, trim: true},
-    babyboxId: { type: Schema.Types.ObjectId, ref: 'Babybox', index: true }
+    babyboxId: { type: Schema.Types.ObjectId, ref: 'Babybox', index: true },
+    flags: {
+        isEmailSent: { type: Boolean, default: false },
+        isDonor: { type: Boolean, default: false },
+    },
+    donated: { type: Number }
 }, { timestamps: true });
 
 export const AddressModel = model<Address>('Address', schema);
