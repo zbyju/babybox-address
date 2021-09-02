@@ -1,4 +1,4 @@
-import { Alert, AlertIcon, Kbd, Heading, ListItem, Text, UnorderedList, OrderedList } from "@chakra-ui/react";
+import { Alert, AlertIcon, Kbd, Heading, ListItem, Text, UnorderedList, OrderedList, Box } from "@chakra-ui/react";
 import React from "react";
 
 export default function Babybo() {
@@ -7,7 +7,7 @@ export default function Babybo() {
         tag: "homepage"
     }]
     return (
-        <>
+        <Box pb="10" mb="10">
             <Heading>Úvodní stránka</Heading>
             <Text>
                 Na úvodní stránce je přehled všech Babyboxů. Karta každého babyboxu obsahuje:
@@ -46,6 +46,20 @@ export default function Babybo() {
                 <ListItem>Adresu ve formuláři neukládat a pokračovat dalšími adresami</ListItem>
                 <ListItem>Odstranit duplicitní adresu v tabulce pomocí červeného tlačítka koše a následně uložit adresu ve formuláři</ListItem>
             </UnorderedList>
-        </>
+
+
+
+            <Heading mt="5">Editování adresy</Heading>
+            <Text>
+                <span>
+                    Editování adresy je možné po otevření Babyboxu -> Otevřít databázi adres, 
+                    nebo při přidávání adresy je možné editovat duplicitní adresu.
+                    Po stisku modrého tlačítka se otevře formulář pro editaci, kde je možné adresu editovat. Po provedení změn je potřeba je uložit pomocí tlačítka Editovat.
+                    Pomocí tlačítka <b>Resetovat formulář</b> je možné vrátit adresu do původního stavu. Pomocí tlačítka <b>Storno</b> je pak možné editování zrušit.
+                    <br />
+                    Opět není možné editovat adresu tak, aby nově zeditovaná adresa byla duplicitní s jinou.
+                </span>
+            </Text>
+        </Box>
     )
 }
