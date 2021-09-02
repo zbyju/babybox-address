@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 import DisplayAddress from "../../../../components/Address/DisplayAddress"
+import DisplayAddressForEmail from "../../../../components/Address/DisplayAddressForEmail";
 
 export default function BrowseAddresses() {
     const router = useRouter();
@@ -12,14 +13,14 @@ export default function BrowseAddresses() {
     const [index, setIndex] = useState<number>(1)
     const [address, setAddress] = useState(addresses && (index || index === 0) ? addresses[index - 1] : null)
     useEffect(() => {
-        if(addresses && index >= 1 && index <= addresses.length) setAddress(addresses[index - 1])
+        if (addresses && index >= 1 && index <= addresses.length) setAddress(addresses[index - 1])
     }, [addresses, index])
     const prevAddress = () => {
-        if(index > 1)
+        if (index > 1)
             setIndex(index - 1)
     }
     const nextAddress = () => {
-        if(index < addresses?.length)
+        if (index < addresses?.length)
             setIndex(index + 1)
     }
     return (
@@ -29,6 +30,7 @@ export default function BrowseAddresses() {
                 <Heading size="sm" fontWeight="300">Adresa #{index}</Heading>
             </VStack>
             <DisplayAddress address={address} />
+            <DisplayAddressForEmail address={address} />
             <HStack justify="space-between" mt={6}>
                 <Button colorScheme="blue" bg="blue.700" leftIcon={<ArrowBackIcon />} onClick={prevAddress}>Předchozí</Button>
                 <NumberInput value={index} size="sm" maxW={24} min={1} max={addresses?.length || 1} onChange={(value) => setIndex(parseInt(value) || 0)}>
