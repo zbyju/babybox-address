@@ -38,7 +38,7 @@ export default function DisplayAddressForEmail({ address }: DisplayAddressForEma
           <InputGroup size="md" variant="filled">
             <Input isReadOnly readOnly value={getSalutation() || ""} />
             <InputRightElement>
-              <IconButton aria-label="Kopírovat" colorScheme="yellow" icon={<CopyIcon />} onClick={() => setCopyValue(getSalutation())} />
+              <IconButton isDisabled={!getSalutation()} aria-label="Kopírovat" colorScheme="yellow" icon={<CopyIcon />} onClick={() => setCopyValue(getSalutation())} />
             </InputRightElement>
           </InputGroup>
         </FormControl>
@@ -48,7 +48,7 @@ export default function DisplayAddressForEmail({ address }: DisplayAddressForEma
           <InputGroup size="md" variant="filled">
             <Input isReadOnly readOnly value={address.email || ""} />
             <InputRightElement>
-              <IconButton aria-label="Kopírovat" colorScheme="yellow" icon={<CopyIcon />} onClick={() => setCopyValue(address.email)} />
+              <IconButton isDisabled={!address.email} aria-label="Kopírovat" colorScheme="yellow" icon={<CopyIcon />} onClick={() => setCopyValue(address.email)} />
             </InputRightElement>
           </InputGroup>
         </FormControl>
