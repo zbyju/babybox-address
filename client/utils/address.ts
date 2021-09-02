@@ -10,7 +10,7 @@ export const isValidAddress = (address: Address): boolean => {
         address.city !== "" &&
         address.postcode !== "" &&
         address.company !== "" &&
-        (address.email === "" || address.email.includes("@"))
+        (!address.email || address.email === "" || address.email.includes("@"))
     )
 }
 
@@ -115,4 +115,9 @@ export const shortHouseAddress = (address?: Address): string => {
 export const shortFullname = (address?: Address): string => {
     if(!address) return ""
     return `${address.firstname} ${address.lastname}`
+}
+
+export const filterEditedDuplicate = (duplicates: Array<Address>, address: Address) => {
+    if(!duplicates) return duplicates
+    return (duplicates as Array<Address>).filter(x => x._id !== address._id)
 }
