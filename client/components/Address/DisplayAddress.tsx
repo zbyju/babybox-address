@@ -1,40 +1,70 @@
 import { CopyIcon } from "@chakra-ui/icons";
-import { Box, Input, InputGroup, InputRightElement, Button, IconButton, useClipboard } from "@chakra-ui/react"
+import { Box, Input, FormLabel, InputGroup, InputRightElement, Button, IconButton, useClipboard, HStack, FormControl } from "@chakra-ui/react"
 import { useEffect, useState } from "react";
 import { Address } from "../../types/address";
 import AddAddressForm from "../Babybox/AddAddressForm";
 import EditAddressForm from "./EditAddressForm";
 
 interface DisplayAddressProps {
-  address?: Address
+    address?: Address
 }
 
 export default function DisplayAddress({ address }: DisplayAddressProps) {
-    const [copyValue, setCopyValue] = useState("")
-    const { hasCopied, onCopy } = useClipboard(copyValue)
-    useEffect(() => {
-        if(copyValue)
-            onCopy()
-    }, [copyValue])
     if (!address) return null
-    const getSalutation = () => {
-        return `Milý ${address.sex === "male" ? "pane" : "paní"} ${address.firstname5} ${address.lastname5},`
-    }
     return (
-        <Box>
-            <InputGroup size="md" mb={3} variant="filled">
-                <Input isReadOnly readOnly value={getSalutation() || ""}/>
-                <InputRightElement>
-                    <IconButton aria-label="Kopírovat" colorScheme="yellow" icon={<CopyIcon />} onClick={() => setCopyValue(getSalutation())}/>
-                </InputRightElement>
-            </InputGroup>
+        <Box mb={3}>
+            <HStack>
+                <FormControl minW="120px" flex={1}>
+                    <FormLabel mb={0}>Titul před</FormLabel>
+                    <Input isReadOnly variant="filled" value={address.titleInFront || ""} />
+                </FormControl>
+                <FormControl>
+                    <FormLabel mb={0}>Jméno</FormLabel>
+                    <Input isReadOnly variant="filled" value={address.firstname} />
+                </FormControl>
+                <FormControl>
+                    <FormLabel mb={0}>Příjmení</FormLabel>
+                    <Input isReadOnly variant="filled" value={address.lastname} />
+                </FormControl>
+                <FormControl minW="120px" flex={1}>
+                    <FormLabel mb={0}>Titul za</FormLabel>
+                    <Input isReadOnly variant="filled" value={address.titleBehind || ""} />
+                </FormControl>
+                <FormControl>
+                    <FormLabel mb={0}>Jméno 5. pád</FormLabel>
+                    <Input isReadOnly variant="filled" value={address.firstname5} />
+                </FormControl>
+                <FormControl>
+                    <FormLabel mb={0}>Příjmení 5. pád</FormLabel>
+                    <Input isReadOnly variant="filled" value={address.lastname5} />
+                </FormControl>
+            </HStack>
 
-            <InputGroup size="md" mb={3} variant="filled">
-                <Input isReadOnly readOnly value={address.email || ""}/>
-                <InputRightElement>
-                    <IconButton aria-label="Kopírovat" colorScheme="yellow" icon={<CopyIcon />} onClick={() => setCopyValue(address.email)}/>
-                </InputRightElement>
-            </InputGroup>
+            <HStack>
+                <FormControl>
+                    <FormLabel mb={0}>Společnost</FormLabel>
+                    <Input isReadOnly variant="filled" value={address.company} />
+                </FormControl>
+                <FormControl>
+                    <FormLabel mb={0}>Email</FormLabel>
+                    <Input isReadOnly variant="filled" value={address.email || ""} />
+                </FormControl>
+            </HStack>
+
+            <HStack>
+                <FormControl>
+                    <FormLabel mb={0}>Ulice</FormLabel>
+                    <Input isReadOnly variant="filled" value={address.street} />
+                </FormControl>
+                <FormControl>
+                    <FormLabel mb={0}>Město</FormLabel>
+                    <Input isReadOnly variant="filled" value={address.city} />
+                </FormControl>
+                <FormControl>
+                    <FormLabel mb={0}>PSČ</FormLabel>
+                    <Input isReadOnly variant="filled" value={address.postcode} />
+                </FormControl>
+            </HStack>
         </Box>
     )
 }
