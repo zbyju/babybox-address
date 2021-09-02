@@ -1,7 +1,7 @@
 import { Babybox } from "../../types/babybox";
 import { Address, FormAddressError, FormAddressItemError } from "../../types/address";
 import { getDefaultAddress, getDefaultFormErrors } from "../../utils/defaultFactory"
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
     Box, Button,
     FormControl,
@@ -32,6 +32,7 @@ import { createAddress } from "../../api/address/createAddress";
 import { getFirstname, getLastname } from "../../api/names/getName";
 import useSWR, { mutate, trigger } from "swr";
 import { triggerAddressesOfHandle, triggerDuplicates } from "../../api/triggers";
+import _ from 'lodash'
 
 interface AddAddressFormProp {
     babyboxHandle: string
@@ -39,7 +40,8 @@ interface AddAddressFormProp {
 
 export default function AddAddressForm({ babyboxHandle }: AddAddressFormProp) {
     const [address, setAddress] = useState<Address>(getDefaultAddress())
-    const { data: duplicates, error: duplicateError } = useSWR(`/address/duplicate/${babyboxHandle}/${address.company}/${address.email}`)
+    const [debouncedAddress, setDebouncedAddress] = useState<Address>(getDefaultAddress())
+    const { data: duplicates, error: duplicateError } = useSWR(`/address/duplicate/${babyboxHandle}/${debouncedAddress.company}/${debouncedAddress.email}`)
     const [errors, setErrors] = useState<FormAddressError>(getDefaultFormErrors())
     const [progress, setProgress] = useState<number>(0)
     const toast = useToast()
@@ -58,6 +60,7 @@ export default function AddAddressForm({ babyboxHandle }: AddAddressFormProp) {
         city: isValidCity,
         postcode: isValidPostcode
     }
+
 
     const updateAddress = (name: string, value: any) => {
         setAddress((prevState: Address) => ({
@@ -80,18 +83,11 @@ export default function AddAddressForm({ babyboxHandle }: AddAddressFormProp) {
     }
 
     const updateProgress = (address: Address, errors: FormAddressError) => setProgress(calculateProgress(address, errors))
-
+    const debouncedAddressUpdate = useRef(_.debounce(setDebouncedAddress, 1000))
     useEffect(() => {
         updateProgress(address, errors)
+        debouncedAddressUpdate.current(address)
     }, [address])
-
-    const handleChange = (e: { target: { name: string; value: any; }; }) => {
-        const { name, value } = e.target;
-        updateAddress(name, value)
-
-        if (name === "firstname") getFirstnameCase5(value)
-        if (name === "lastname") getLastnameCase5(value)
-    };
 
     const getFirstnameCase5 = async (name: string) => {
         if (name === "") return
@@ -115,6 +111,16 @@ export default function AddAddressForm({ babyboxHandle }: AddAddressFormProp) {
             }))
         } catch (err) { console.log(err) }
     }
+
+    const debouncedGetFirstnameCase5 = useRef(_.debounce(getFirstnameCase5, 500))
+    const debouncedGetLastnameCase5 = useRef(_.debounce(getLastnameCase5, 500))
+    const handleChange = (e: { target: { name: string; value: any; }; }) => {
+        const { name, value } = e.target;
+        updateAddress(name, value)
+
+        if (name === "firstname") debouncedGetFirstnameCase5.current(value)
+        if (name === "lastname") debouncedGetLastnameCase5.current(value)
+    };
 
     const submitAddress = async () => {
         if (!isValidAddress(address)) {
@@ -285,7 +291,6 @@ export default function AddAddressForm({ babyboxHandle }: AddAddressFormProp) {
                     <Button colorScheme="green" onClick={submitAddress}>Uložit</Button>
                 </HStack>
             </HStack>
-
             <VStack mt={10} mb={6} alignItems="flex-start">
                 <HStack justifyContent="flex-start" mb="3">
                     <Heading mr={2}>Duplicity</Heading>
