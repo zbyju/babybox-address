@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { getDefaultBabybox } from "../../utils/defaultFactory";
 import { useState } from "react";
 import BabyboxStats from "../../components/Babybox/Stats/BabyboxStats";
-import { AddIcon, ArrowRightIcon, ChevronLeftIcon, DownloadIcon, InfoIcon } from "@chakra-ui/icons";
+import { AddIcon, ArrowRightIcon, SearchIcon, ChevronLeftIcon, DownloadIcon, InfoIcon } from "@chakra-ui/icons";
 import useSWR from "swr";
 import { getBabyboxByHandle } from "../../api/babybox/getBabyboxes";
 import Link from "next/link"
@@ -27,6 +27,9 @@ export default function BabyboxPage() {
                             </Link>
                             <Link href={`/babybox/address/add/${encodeURIComponent(handle)}`}>
                                 <Button mt="5px" mr="10px" bg="blue.700" leftIcon={<AddIcon />}>Přidávat další adresy</Button>
+                            </Link>
+                            <Link href={`/babybox/address/browse/${encodeURIComponent(handle)}`}>
+                                <Button mt="5px" mr="10px" bg="blue.600" leftIcon={<SearchIcon />}>Procházet adresy</Button>
                             </Link>
                         </ButtonGroup>
 
