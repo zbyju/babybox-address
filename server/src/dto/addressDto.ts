@@ -67,10 +67,20 @@ export const updateById = async (id: mongoose.Types.ObjectId, address: Address):
 
 export const update = async (query: Object, address: Address): Promise<Address> => {
     return new Promise((resolve, reject) => {
-        AddressModel.updateOne(query, address, {},(err: CallbackError, res) => {
-            if(err) reject(err)
-            resolve(res)
-        })
+        if(!address.email || address.email === "") {
+            AddressModel.updateOne(query, address, {},(err: CallbackError, res) => {
+                AddressModel.updateOne(query, {$unset: { email: ""}}, {}, (err, res) => {
+                    if(err) reject(err)
+                    resolve(res)
+                })
+            })
+        } else {
+            AddressModel.updateOne(query, address, {},(err: CallbackError, res) => {
+                AddressModel.updateOne(query, )
+                if(err) reject(err)
+                resolve(res)
+            })
+        }
     })
 }
 
