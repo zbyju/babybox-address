@@ -106,3 +106,13 @@ export const prettyShortAddress = (address?: Address): string => {
     const emailString = address.email ? `(${address.email})` : " "
     return `${address.firstname} ${address.lastname} ${emailString}- ${address.company}`
 }
+
+export const shortHouseAddress = (address?: Address): string => {
+    if(!address) return ""
+    return `${address.street}, ${address.city}, ${address.postcode}`
+}
+
+export const shortFullname = (address?: Address): string => {
+    if(!address) return ""
+    return `${address.firstname} ${address.lastname}`
+}
