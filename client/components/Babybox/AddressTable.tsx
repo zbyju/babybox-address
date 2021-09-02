@@ -1,18 +1,20 @@
 import { Address } from "../../types/address";
 import { IconButton, Button, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogBody, AlertDialogHeader, AlertDialogFooter, Table, Tbody, Td, Tfoot, Th, Thead, Tr, useToast, Tag } from "@chakra-ui/react";
 import { prettyShortAddress, sexToCZ, shortFullname, shortHouseAddress } from "../../utils/address";
-import { DeleteIcon } from "@chakra-ui/icons";
+import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { useEffect, useRef, useState } from "react";
 import { deleteAddress } from "../../api/address/deleteAddress"
 import { mutate, trigger } from "swr";
 import { triggerAddressesOfHandle, triggerDuplicates } from "../../api/triggers";
 import moment from "moment";
+import EditAddressModal from "../Address/EditAddressModal";
 
 
 interface AddressTableProp {
     addresses: Array<Address>,
     handle: string,
     address?: Address,
+    editButton?: boolean
 }
 
 interface AddressDialog {
@@ -20,8 +22,10 @@ interface AddressDialog {
     address?: Address,
 }
 
-export default function AddressTable({ addresses, handle, address }: AddressTableProp) {
+
+export default function AddressTable({ addresses, handle, address, editButton }: AddressTableProp) {
     const [deleteDialog, setDeleteDialog] = useState<AddressDialog>({ open: false })
+    const [editDialog, setEditDialog] = useState<AddressDialog>({ open: false })
     const cancelRef = useRef()
     const toast = useToast()
     const deleteDialogClicked = async () => {
@@ -29,7 +33,7 @@ export default function AddressTable({ addresses, handle, address }: AddressTabl
         const addressId = deleteDialog.address._id
         try {
             const result = await deleteAddress(addressId)
-            if(address)
+            if (address)
                 triggerDuplicates(handle, address.company, address.email)
             else
                 triggerAddressesOfHandle(handle)
@@ -78,8 +82,9 @@ export default function AddressTable({ addresses, handle, address }: AddressTabl
                                 <Td padding="5px">{addr.company}</Td>
                                 <Td padding="5px">{addr.email}</Td>
                                 <Td padding="5px">{shortHouseAddress(addr)}</Td>
-                                <Td padding="5px">
-                                    <IconButton aria-label="Smazat adresu" size="xs" colorScheme="red" icon={<DeleteIcon />} onClick={() => setDeleteDialog({ open: true, address: addr })} />
+                                <Td paddingLeft="5px">
+                                    <IconButton aria-label="Smazat adresu" size="xs" mr="1" colorScheme="red" icon={<DeleteIcon />} onClick={() => setDeleteDialog({ open: true, address: addr })} />
+                                    {editButton !== false ? <IconButton aria-label="Editovat adresu" size="xs" colorScheme="blue" icon={<EditIcon />} onClick={() => setEditDialog({ open: true, address: addr })} /> : null}
                                 </Td>
                             </Tr>
                         )
@@ -88,7 +93,7 @@ export default function AddressTable({ addresses, handle, address }: AddressTabl
             </Table>
 
 
-
+            <EditAddressModal address={editDialog.address} handle={handle} isOpen={editDialog.open} close={() => setEditDialog({ open: false })} />
 
             <AlertDialog
                 isOpen={deleteDialog.open}
