@@ -26,7 +26,7 @@ export default function DisplayAddressForEmail({ address }: DisplayAddressForEma
   }, [copyValue])
   if (!address) return null
   const getSalutation = () => {
-    return `Milý ${address.sex === "male" ? "pane" : "paní"} ${address.firstname5} ${address.lastname5},`
+    return `${address.sex === "male" ? "Milý" : "Milá"} ${address.sex === "male" ? "pane" : "paní"} ${address.firstname5} ${address.lastname5},`
   }
   return (
     <Box>
