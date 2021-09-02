@@ -33,5 +33,4 @@ export default function Home() {
             <ListFastLinks linksProp={fastLinks} />
         </>
     )
-
 }
