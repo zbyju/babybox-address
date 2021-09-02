@@ -1,17 +1,18 @@
 import { Address } from "../../types/address";
-import { IconButton, Button, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogBody, AlertDialogHeader, AlertDialogFooter, Table, Tbody, Td, Tfoot, Th, Thead, Tr, useToast } from "@chakra-ui/react";
-import { prettyShortAddress, sexToCZ } from "../../utils/address";
+import { IconButton, Button, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogBody, AlertDialogHeader, AlertDialogFooter, Table, Tbody, Td, Tfoot, Th, Thead, Tr, useToast, Tag } from "@chakra-ui/react";
+import { prettyShortAddress, sexToCZ, shortFullname, shortHouseAddress } from "../../utils/address";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { useEffect, useRef, useState } from "react";
 import { deleteAddress } from "../../api/address/deleteAddress"
 import { mutate, trigger } from "swr";
 import { triggerAddressesOfHandle, triggerDuplicates } from "../../api/triggers";
+import moment from "moment";
 
 
 interface AddressTableProp {
     addresses: Array<Address>,
     handle: string,
-    address: Address,
+    address?: Address,
 }
 
 interface AddressDialog {
@@ -28,7 +29,12 @@ export default function AddressTable({ addresses, handle, address }: AddressTabl
         const addressId = deleteDialog.address._id
         try {
             const result = await deleteAddress(addressId)
-            triggerDuplicates(handle, address.company, address.email)
+            if(address)
+                triggerDuplicates(handle, address.company, address.email)
+            else
+                triggerAddressesOfHandle(handle)
+
+            setDeleteDialog({ open: false })
             return toast({
                 title: "Adresa úspěšně smazána.",
                 description: `Byla smazána adresa ${prettyShortAddress(address)}`,
@@ -43,37 +49,36 @@ export default function AddressTable({ addresses, handle, address }: AddressTabl
                 isClosable: true,
             })
         }
-        return setDeleteDialog({ open: false })
     }
     return (
         <>
-            <Table size="sm">
+            <Table size="sm" variant="striped" overflowY="scroll">
                 <Thead>
                     <Tr>
-                        <Th>Jméno / 5. pád</Th>
-                        <Th>Příjmení / 5. pád</Th>
-                        <Th>Pohlaví</Th>
-                        <Th>Název společnosti</Th>
-                        <Th>Email</Th>
-                        <Th>Ulice</Th>
-                        <Th>Město</Th>
-                        <Th>PSČ</Th>
-                        <Th>Akce</Th>
+                        <Th padding="5px">Vytvořeno</Th>
+                        <Th padding="5px">Celé jméno</Th>
+                        <Th padding="5px">Pohlaví</Th>
+                        <Th padding="5px">Společnost</Th>
+                        <Th padding="5px">Email</Th>
+                        <Th padding="5px">Adresa</Th>
+                        <Th padding="5px">Akce</Th>
                     </Tr>
                 </Thead>
                 <Tbody>
                     {addresses?.map(addr => {
                         return (
                             <Tr key={addr.company}>
-                                <Td>{addr.firstname} / {addr.firstname5}</Td>
-                                <Td>{addr.lastname} / {addr.lastname5}</Td>
-                                <Td>{sexToCZ(addr.sex)}</Td>
-                                <Td>{addr.company}</Td>
-                                <Td>{addr.email}</Td>
-                                <Td>{addr.street}</Td>
-                                <Td>{addr.city}</Td>
-                                <Td>{addr.postcode}</Td>
-                                <Td>
+                                <Td padding="5px">{moment(addr.createdAt).format("D.M.YY HH:mm:ss")}</Td>
+                                <Td padding="5px">{shortFullname(addr)}</Td>
+                                <Td padding="5px">{addr.sex === "male" ? (
+                                    <Tag colorScheme="blue">Muž</Tag>
+                                ) : (
+                                    <Tag colorScheme="pink">Žena</Tag>
+                                )}</Td>
+                                <Td padding="5px">{addr.company}</Td>
+                                <Td padding="5px">{addr.email}</Td>
+                                <Td padding="5px">{shortHouseAddress(addr)}</Td>
+                                <Td padding="5px">
                                     <IconButton aria-label="Smazat adresu" size="xs" colorScheme="red" icon={<DeleteIcon />} onClick={() => setDeleteDialog({ open: true, address: addr })} />
                                 </Td>
                             </Tr>
