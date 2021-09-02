@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import useSWR from "swr";
 import DisplayAddress from "../../../../components/Address/DisplayAddress"
 import DisplayAddressForEmail from "../../../../components/Address/DisplayAddressForEmail";
+import { add } from "lodash";
 
 export default function BrowseAddresses() {
     const router = useRouter();
@@ -32,7 +33,7 @@ export default function BrowseAddresses() {
             <DisplayAddress address={address} />
             <DisplayAddressForEmail address={address} />
             <HStack justify="space-between" mt={6}>
-                <Button colorScheme="blue" bg="blue.700" leftIcon={<ArrowBackIcon />} onClick={prevAddress}>Předchozí</Button>
+                <Button isDisabled={index == 1} colorScheme="blue" bg="blue.700" leftIcon={<ArrowBackIcon />} onClick={prevAddress}>Předchozí</Button>
                 <NumberInput value={index} size="sm" maxW={24} min={1} max={addresses?.length || 1} onChange={(value) => setIndex(parseInt(value) || 0)}>
                     <NumberInputField />
                     <NumberInputStepper>
@@ -40,7 +41,7 @@ export default function BrowseAddresses() {
                         <NumberDecrementStepper />
                     </NumberInputStepper>
                 </NumberInput>
-                <Button colorScheme="blue" bg="blue.500" rightIcon={<ArrowForwardIcon />} onClick={nextAddress}>Další</Button>
+                <Button isDisabled={index >= addresses?.length} colorScheme="blue" bg="blue.500" rightIcon={<ArrowForwardIcon />} onClick={nextAddress}>Další</Button>
             </HStack>
         </>
     )
