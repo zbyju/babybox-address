@@ -12,7 +12,7 @@ interface BabyboxCardProps {
 
 export default function BabyboxCard({ babybox, starPressed }: BabyboxCardProps) {
     const star = useStarHook(babybox, starPressed)
-    const { data, error } = useSWR("/address/count/" + babybox._id)
+    const { data, error } = useSWR(babybox?._id ? "/address/count/" + babybox._id : null)
     const note = babybox.note ? "Poznámka: " + babybox.note : ""
 
     const addressCount = error ? (

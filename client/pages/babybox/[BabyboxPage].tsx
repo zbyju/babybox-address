@@ -11,7 +11,7 @@ import Link from "next/link"
 export default function BabyboxPage() {
     const router = useRouter();
     const { BabyboxPage: handle } = Array.isArray(router.query) ? router.query[0] : router.query
-    const { data: babybox, } = useSWR("/babybox/handle/" + handle)
+    const { data: babybox, } = useSWR(handle ? "/babybox/handle/" + handle : null)
     return (
         <>
             <Heading>Babybox {babybox?.name ? babybox.name : handle}</Heading>
@@ -22,7 +22,9 @@ export default function BabyboxPage() {
                     <Heading size="lg" mb={4}>Rozcestník</Heading>
                     <HStack wrap="wrap" spacing="0">
                         <ButtonGroup spacing="0" colorScheme="blue" size="sm" color="white">
-                            <Button mt="5px" mr="10px" bg="blue.900" leftIcon={<ChevronLeftIcon w={6} h={6} />} pl={1}>Otevřít databázi adres</Button>
+                            <Link href={`/babybox/address/${encodeURIComponent(handle)}`}>
+                                <Button mt="5px" mr="10px" bg="blue.900" leftIcon={<ChevronLeftIcon w={6} h={6} />} pl={1}>Otevřít databázi adres</Button>
+                            </Link>
                             <Link href={`/babybox/address/add/${encodeURIComponent(handle)}`}>
                                 <Button mt="5px" mr="10px" bg="blue.700" leftIcon={<AddIcon />}>Přidávat další adresy</Button>
                             </Link>

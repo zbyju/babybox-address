@@ -41,7 +41,7 @@ interface AddAddressFormProp {
 export default function AddAddressForm({ babyboxHandle }: AddAddressFormProp) {
     const [address, setAddress] = useState<Address>(getDefaultAddress())
     const [debouncedAddress, setDebouncedAddress] = useState<Address>(getDefaultAddress())
-    const { data: duplicates, error: duplicateError } = useSWR(`/address/duplicate/${babyboxHandle}/${debouncedAddress.company}/${debouncedAddress.email}`)
+    const { data: duplicates, error: duplicateError } = useSWR(babyboxHandle ? `/address/duplicate/${babyboxHandle}/${debouncedAddress.company}/${debouncedAddress.email}` : null)
     const [errors, setErrors] = useState<FormAddressError>(getDefaultFormErrors())
     const [progress, setProgress] = useState<number>(0)
     const toast = useToast()
