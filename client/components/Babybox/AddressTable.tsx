@@ -84,7 +84,11 @@ export default function AddressTable({ addresses, handle, address, editButton }:
                                 <Td padding="5px">{shortHouseAddress(addr)}</Td>
                                 <Td paddingLeft="5px">
                                     <IconButton aria-label="Smazat adresu" size="xs" mr="1" colorScheme="red" icon={<DeleteIcon />} onClick={() => setDeleteDialog({ open: true, address: addr })} />
-                                    {editButton !== false ? <IconButton aria-label="Editovat adresu" size="xs" colorScheme="blue" icon={<EditIcon />} onClick={() => setEditDialog({ open: true, address: addr })} /> : null}
+                                    {editButton !== false ?
+                                        <IconButton aria-label="Editovat adresu" size="xs" colorScheme="blue"
+                                            icon={<EditIcon />}
+                                            onClick={() => setEditDialog({ open: true, address: addr })} />
+                                        : null}
                                 </Td>
                             </Tr>
                         )
