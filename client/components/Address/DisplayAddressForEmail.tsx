@@ -19,6 +19,7 @@ export default function DisplayAddressForEmail({ address }: DisplayAddressForEma
       toast({
         title: "Zkopírováno",
         description: "Bylo zkopírováno: " + copyValue,
+        duration: 1500,
         isClosable: true,
         status: "success"
       })
