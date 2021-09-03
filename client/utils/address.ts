@@ -121,3 +121,17 @@ export const filterEditedDuplicate = (duplicates: Array<Address>, address: Addre
     if(!duplicates) return duplicates
     return (duplicates as Array<Address>).filter(x => x._id !== address._id)
 }
+
+export const filterByDonor = (addresses: Array<Address>, donorFilter: "all"|"donor"|"notDonor"): Array<Address> => {
+    if(donorFilter === "all") return addresses
+    if(donorFilter === "donor") return addresses.filter(a => a.flags?.isDonor === true)
+    if(donorFilter === "notDonor") return addresses.filter(a => !a.flags?.isDonor)
+    return addresses
+}
+
+export const filterByEmail = (addresses: Array<Address>, emailFilter: "all"|"emailSent"|"emailNotSent"): Array<Address> => {
+    if(emailFilter === "all") return addresses
+    if(emailFilter === "emailSent") return addresses.filter(a => a.flags?.isEmailSent === true)
+    if(emailFilter === "emailNotSent") return addresses.filter(a => !a.flags?.isEmailSent)
+    return addresses
+}
