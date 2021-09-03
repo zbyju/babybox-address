@@ -288,7 +288,7 @@ export default function EditAddressForm({ babyboxHandle, addressProp, close }: E
         </HStack>
         <HStack>
           <Button onClick={() => close()}>Storno</Button>
-          <Button onClick={submitAddress} colorScheme="blue">Editovat</Button>
+          <Button onClick={submitAddress} colorScheme="green">Uložit</Button>
         </HStack>
       </HStack>
       <VStack mt={10} mb={6} alignItems="flex-start">
