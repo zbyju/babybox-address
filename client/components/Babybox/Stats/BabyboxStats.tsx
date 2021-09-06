@@ -3,7 +3,8 @@ import { Babybox } from "../../../types/babybox";
 import { AddIcon, ChevronLeftIcon } from "@chakra-ui/icons";
 import useStarHook from "../../../hooks/useStarHook";
 import Link from 'next/link'
-import StatsPerPeriod from "./StatsPerPeriod";
+import AddressesPerPeriod from "./AddressesPerPeriod";
+import AddressesCountStat from "./AddressesCountStat";
 import useSWR from "swr";
 import { getAllAddresses } from "../../../api/address/getAddresses";
 import { Address } from "../../../types/address";
@@ -26,13 +27,25 @@ export default function BabyboxStats({ babyboxHandle }: BabyboxStatsProp) {
         </Flex>
     )
     return (
-        <Flex justify="space-between" wrap="wrap" mt={5} p={3} bg="whitesmoke" borderRadius={5} boxShadow="md">
-            <StatsPerPeriod title="Celkem" addresses={addresses} />
-            <StatsPerPeriod title="Tento měsíc" addresses={thisMonth(addresses)} />
-            <StatsPerPeriod title="Tento týden" addresses={thisWeek(addresses)} />
-            <StatsPerPeriod title="Minulý týden" addresses={lastWeek(addresses)} />
-            <StatsPerPeriod title="Dnes" addresses={todayAddresses(addresses)} />
-            <StatsPerPeriod title="Včera" addresses={yesterdayAddresses(addresses)} />
-        </Flex>
+        <>
+            <Flex justify="space-between" wrap="wrap" mt={5} p={3} bg="whitesmoke" borderRadius={5} boxShadow="md">
+                <AddressesPerPeriod title="Celkem" addresses={addresses} />
+                <AddressesPerPeriod title="Tento měsíc" addresses={thisMonth(addresses)} />
+                <AddressesPerPeriod title="Tento týden" addresses={thisWeek(addresses)} />
+                <AddressesPerPeriod title="Minulý týden" addresses={lastWeek(addresses)} />
+                <AddressesPerPeriod title="Dnes" addresses={todayAddresses(addresses)} />
+                <AddressesPerPeriod title="Včera" addresses={yesterdayAddresses(addresses)} />
+            </Flex>
+
+            <Flex justify="space-between" wrap="wrap" mt={5} p={3} bg="whitesmoke" borderRadius={5} boxShadow="md">
+                <AddressesCountStat title="Celkem" addresses={addresses} />
+                <AddressesCountStat title="Mužů" addresses={addresses.filter((a: Address) => a.sex === "male")} />
+                <AddressesCountStat title="Žen" addresses={addresses.filter((a: Address) => a.sex === "female")} />
+                <AddressesCountStat title="Adres s emailem" addresses={addresses.filter((a: Address) => a.email)} />
+                <AddressesCountStat title="Odeslaných Emailů" addresses={addresses.filter((a: Address) => a.flags?.isEmailSent)} />
+                <AddressesCountStat title="Neodeslaných Emailů" addresses={addresses.filter((a: Address) => !a.flags?.isEmailSent)} />
+                <AddressesCountStat title="Dárců" addresses={addresses.filter((a: Address) => a.flags?.isDonor)} />
+            </Flex>
+        </>
     )
 }

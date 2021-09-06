@@ -2,12 +2,12 @@ import { Address } from "../../../types/address";
 import { Stat, StatHelpText, StatLabel, StatNumber } from "@chakra-ui/react";
 import moment from "moment";
 
-interface StatsLastPeriodProp {
+interface AddressesPerPeriodProp {
     title: string,
     addresses: Array<Address>
 }
 
-export default function StatsLastPeriod({ title, addresses }: StatsLastPeriodProp) {
+export default function AddressesPerPeriod({ title, addresses }: AddressesPerPeriodProp) {
     const hoursPerDay = 8
     const addressLabelPlurality = addresses.length === 1 ? "adresa" : addresses.length < 5 ? "adresy" : "adres"
     if (addresses.length === 0) {
