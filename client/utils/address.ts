@@ -145,7 +145,8 @@ export const filterBySearch = (addresses: Array<Address>, searchTerm: string): A
             a.email?.toLowerCase().includes(searchTermLower) ||
             a.firstname.toLowerCase().includes(searchTermLower) ||
             a.lastname.toLowerCase().includes(searchTermLower) ||
-            a.street.toLowerCase().includes(searchTermLower)
+            a.street.toLowerCase().includes(searchTermLower) ||
+            a.city.toLowerCase().includes(searchTermLower)
         )
     })
 }
