@@ -6,23 +6,36 @@ import AddAddressForm from "../Babybox/AddAddressForm";
 import EditAddressModal from "./EditAddressModal";
 import { EditIcon } from "@chakra-ui/icons"
 import { inverseDonor, inverseEmail, setDonor } from "../../api/address/putAddress";
-import { filterByDonor, filterByEmail } from "../../utils/address";
+import { filterByDonor, filterByEmail, filterBySearch } from "../../utils/address";
+import _ from 'lodash'
 
 interface FilterAddressesActionsProps {
   addresses: Array<Address>,
   setAddresses: Dispatch<SetStateAction<any>>,
+  showSearch: boolean
 }
 
 type donorFilterType = "all" | "donor" | "notDonor"
 type emailFilterType = "all" | "emailSent" | "emailNotSent"
 
-export default function FilterAddressesActions({ addresses, setAddresses }: FilterAddressesActionsProps) {
+export default function FilterAddressesActions({ addresses, setAddresses, showSearch }: FilterAddressesActionsProps) {
   const [donorFilter, setDonorFilter] = useState<donorFilterType>("all")
   const [emailFilter, setEmailFilter] = useState<emailFilterType>("all")
+  const [searchQuery, setSearchQuery] = useState<string>("")
   useEffect(() => {
-    setAddresses(filterByDonor(filterByEmail(addresses, emailFilter), donorFilter))
+    setAddresses(
+      filterBySearch(
+        filterByDonor(
+          filterByEmail(addresses, emailFilter),
+        donorFilter),
+      searchQuery)
+    )
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [donorFilter, emailFilter])
+  }, [donorFilter, emailFilter, searchQuery])
+
+  const debounceSetSearch = _.debounce((event) => {
+    setSearchQuery(event.target.value)
+  }, 700)
 
   return (
     <HStack alignItems="flex-end">
@@ -45,6 +58,14 @@ export default function FilterAddressesActions({ addresses, setAddresses }: Filt
           <option value="emailNotSent">Jen email neodeslán</option>
         </Select>
       </FormControl>
+
+      {showSearch &&
+        <FormControl id="inputSearchQuery">
+          <FormLabel fontSize="sm" mb={0}>Vyhledat adresu</FormLabel>
+          <Input size="sm"
+            onChange={(event) => { debounceSetSearch(event) }} />
+        </FormControl>
+      }
     </HStack>
   )
 }

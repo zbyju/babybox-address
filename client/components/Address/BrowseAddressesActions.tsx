@@ -24,7 +24,7 @@ export default function BrowseAddressesActions({ address, handle, addresses, set
   const [editDialog, setEditDialog] = useState<AddressDialog>({ open: false })
   return (
     <HStack mb={3} alignItems="flex-end">
-      <FilterAddressesActions addresses={addresses} setAddresses={setAddresses} />
+      <FilterAddressesActions addresses={addresses} setAddresses={setAddresses} showSearch={false} />
 
       <Box height="35px">
         <Divider orientation="vertical" />

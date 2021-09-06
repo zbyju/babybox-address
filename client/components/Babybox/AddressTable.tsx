@@ -62,7 +62,7 @@ export default function AddressTable({ addresses, handle, address, editButton }:
     return (
         <>
             <HStack mb={4}>
-                <FilterAddressesActions addresses={addresses} setAddresses={setAddressesFiltered} />
+                <FilterAddressesActions addresses={addresses} setAddresses={setAddressesFiltered} showSearch={true} />
             </HStack>
 
 

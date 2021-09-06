@@ -135,3 +135,17 @@ export const filterByEmail = (addresses: Array<Address>, emailFilter: "all"|"ema
     if(emailFilter === "emailNotSent") return addresses.filter(a => !a.flags?.isEmailSent)
     return addresses
 }
+
+export const filterBySearch = (addresses: Array<Address>, searchTerm: string): Array<Address> => {
+    if(!searchTerm) return addresses
+    const searchTermLower = searchTerm.toLowerCase()
+    return addresses.filter(a => {
+        return (
+            a.company.toLowerCase().includes(searchTermLower) ||
+            a.email?.toLowerCase().includes(searchTermLower) ||
+            a.firstname.toLowerCase().includes(searchTermLower) ||
+            a.lastname.toLowerCase().includes(searchTermLower) ||
+            a.street.toLowerCase().includes(searchTermLower)
+        )
+    })
+}
