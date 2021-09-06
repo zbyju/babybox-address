@@ -29,3 +29,15 @@ export const lastWeek = (addresses: Array<Address>): Array<Address> => {
 export const thisMonth = (addresses: Array<Address>): Array<Address> => {
   return timeFilterAddress(addresses, moment().startOf("month"), moment().endOf("month"))
 }
+
+export const countDistinctHours = (addresses: Array<Address>): number => {
+  // Contains all distinct hours
+  // in format YYYYDDDHH as strings/numbers
+  // where (YYYY - year, DD - day of year, HH - hour of day)
+  let hours: Array<string> = []
+  addresses.forEach(a => {
+    const num = moment(a.createdAt).format("YYYYDDDHH")
+    if(!hours.includes(num)) hours.push(num)
+  })
+  return hours.length
+}
