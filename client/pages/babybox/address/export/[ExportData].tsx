@@ -6,14 +6,13 @@ import ExportDataForm from "../../../../components/Address/ExportDataForm"
 
 export default function ExportData() {
     const router = useRouter();
-    const { AddAddress: handle } = Array.isArray(router.query) ? router.query[0] : router.query
+    const { ExportData: handle } = Array.isArray(router.query) ? router.query[0] : router.query
     const { data: addresses, error } = useSWR(handle ? "/address/babybox/handle/" + handle : null)
 
     return (
         <>
             <HStack justify="space-between" mb="3">
-                <Heading>Exporasftovat data</Heading>
-                <Text>safd {addresses?.length || addresses?.toString()}</Text>
+                <Heading>Exportovat data</Heading>
             </HStack>
             { error ? (
                 <Alert status="error" mb="3">
@@ -34,7 +33,7 @@ export default function ExportData() {
                     <AlertDescription>Chvilku strpení, adresy se načítají.</AlertDescription>
                 </Alert>
             ) : (
-                <ExportDataForm addresses={addresses} />
+                <ExportDataForm addresses={addresses} handle={handle} />
             )}
         </>
     )
