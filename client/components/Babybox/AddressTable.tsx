@@ -1,5 +1,5 @@
 import { Address } from "../../types/address";
-import { IconButton, Button, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogBody, AlertDialogHeader, AlertDialogFooter, Table, Tbody, Td, Tfoot, Th, Thead, Tr, useToast, Tag, Flex } from "@chakra-ui/react";
+import { IconButton, Button, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogBody, AlertDialogHeader, AlertDialogFooter, Table, Tbody, Td, Tfoot, Th, Thead, Tr, useToast, Tag, Flex, HStack } from "@chakra-ui/react";
 import { prettyShortAddress, sexToCZ, shortFullname, shortHouseAddress } from "../../utils/address";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { useEffect, useRef, useState } from "react";
@@ -8,6 +8,7 @@ import { mutate, trigger } from "swr";
 import { triggerAddressesOfHandle, triggerDuplicates } from "../../api/triggers";
 import moment from "moment";
 import EditAddressModal from "../Address/EditAddressModal";
+import FilterAddressesActions from "../Address/FilterAddressesActions";
 
 
 interface AddressTableProp {
@@ -26,6 +27,7 @@ interface AddressDialog {
 export default function AddressTable({ addresses, handle, address, editButton }: AddressTableProp) {
     const [deleteDialog, setDeleteDialog] = useState<AddressDialog>({ open: false })
     const [editDialog, setEditDialog] = useState<AddressDialog>({ open: false })
+    const [addressesFiltered, setAddressesFiltered] = useState<Array<Address>>(addresses)
     const cancelRef = useRef()
     const toast = useToast()
     const deleteDialogClicked = async () => {
@@ -54,8 +56,16 @@ export default function AddressTable({ addresses, handle, address, editButton }:
             })
         }
     }
+    useEffect(() => {
+        setAddressesFiltered(addresses)
+    }, [addresses])
     return (
         <>
+            <HStack mb={4}>
+                <FilterAddressesActions addresses={addresses} setAddresses={setAddressesFiltered} />
+            </HStack>
+
+
             <Table size="sm" variant="striped" overflowY="scroll">
                 <Thead>
                     <Tr>
@@ -70,7 +80,7 @@ export default function AddressTable({ addresses, handle, address, editButton }:
                     </Tr>
                 </Thead>
                 <Tbody>
-                    {addresses?.map(addr => {
+                    {addressesFiltered?.map(addr => {
                         return (
                             <Tr key={addr.company}>
                                 <Td padding="5px">{moment(addr.createdAt).format("D.M.YY HH:mm:ss")}</Td>

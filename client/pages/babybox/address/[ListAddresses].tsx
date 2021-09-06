@@ -9,7 +9,7 @@ export default function ListAddresses() {
     const { data: addresses, error } = useSWR(handle ? "/address/babybox/handle/" + handle : null)
     return (
         <>
-            <Heading mb={5}>Všechny adresy:</Heading>
+            <Heading mb={1}>Všechny adresy:</Heading>
             {error ? (
                 <Alert status="error" mb="3">
                     <AlertIcon />
