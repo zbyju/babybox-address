@@ -9,23 +9,21 @@ import BrowseAddressesActions from "../../../../components/Address/BrowseAddress
 import { add } from "lodash";
 import { filterByDonor, filterByEmail } from "../../../../utils/address";
 import { setEmailSent } from "../../../../api/address/putAddress";
+import { Address } from "../../../../types/address";
 
 export default function BrowseAddresses() {
     const router = useRouter();
     const { BrowseAddresses: handle } = Array.isArray(router.query) ? router.query[0] : router.query
     const { data: addresses, error } = useSWR(handle ? "/address/babybox/handle/" + handle : null)
     const [index, setIndex] = useState<number>(1)
-    const donorFilter = useState<"all" | "donor" | "notDonor">("all")
-    const emailFilter = useState<"all" | "emailSent" | "emailNotSent">("all")
-    const [address, setAddress] = useState(addresses && (index || index === 0) ? addresses[index - 1] : null)
-    const [addressesFiltered, setAddressesFiltered] = useState(addresses)
+    const [address, setAddress] = useState<Address>(addresses && (index || index === 0) ? addresses[index - 1] : null)
+    const [addressesFiltered, setAddressesFiltered] = useState<Array<Address>>(addresses)
+    useEffect(() => {
+        setAddressesFiltered(addresses)
+    }, [addresses])
     useEffect(() => {
         if (addressesFiltered && index >= 1 && index <= addressesFiltered.length) setAddress(addressesFiltered[index - 1])
     }, [addressesFiltered, index])
-    useEffect(() => {
-        setIndex(1)
-        setAddressesFiltered(filterByDonor(filterByEmail(addresses, emailFilter[0]), donorFilter[0]))
-    }, [addresses, donorFilter[0], emailFilter[0]])
     const prevAddress = () => {
         if (index > 1)
             setIndex(index - 1)
@@ -42,7 +40,7 @@ export default function BrowseAddresses() {
                     <Heading size="sm" fontWeight="300">Adresa {index}/{addressesFiltered?.length}</Heading>
                     :
                     <Heading size="sm" fontWeight="300">Adresa -/-</Heading>}
-                <BrowseAddressesActions address={address} handle={handle} donorFilter={donorFilter} emailFilter={emailFilter} />
+                <BrowseAddressesActions address={address} handle={handle} addresses={addresses} setAddresses={setAddressesFiltered} />
                 <Divider />
             </VStack>
             {addressesFiltered?.length > 0 ? (

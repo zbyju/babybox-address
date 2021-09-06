@@ -6,12 +6,13 @@ import AddAddressForm from "../Babybox/AddAddressForm";
 import EditAddressModal from "./EditAddressModal";
 import { EditIcon } from "@chakra-ui/icons"
 import { inverseDonor, inverseEmail, setDonor } from "../../api/address/putAddress";
+import FilterAddressesActions from "./FilterAddressesActions";
 
 interface BrowseAddressesActionsProps {
   address: Address,
   handle: string,
-  donorFilter: ["all" | "donor" | "notDonor", Dispatch<SetStateAction<any>>],
-  emailFilter: ["all" | "emailSent" | "emailNotSent", Dispatch<SetStateAction<any>>],
+  addresses: Array<Address>,
+  setAddresses: Dispatch<SetStateAction<any>>
 }
 
 interface AddressDialog {
@@ -19,29 +20,11 @@ interface AddressDialog {
   address?: Address,
 }
 
-export default function BrowseAddressesActions({ address, handle, donorFilter, emailFilter }: BrowseAddressesActionsProps) {
+export default function BrowseAddressesActions({ address, handle, addresses, setAddresses }: BrowseAddressesActionsProps) {
   const [editDialog, setEditDialog] = useState<AddressDialog>({ open: false })
   return (
     <HStack mb={3} alignItems="flex-end">
-      <FormControl>
-        <FormLabel fontSize="sm" mb={0}>Filtr dárci</FormLabel>
-        <Select size="sm" onChange={(event) => {
-          donorFilter[1](event.target.value)
-        }}>
-          <option value="all">Všichni</option>
-          <option value="donor">Jen dárci</option>
-          <option value="notDonor">Jen nedárci</option>
-        </Select>
-      </FormControl>
-
-      <FormControl>
-        <FormLabel fontSize="sm" mb={0}>Filtr dárci</FormLabel>
-        <Select size="sm" onChange={(event) => { emailFilter[1](event.target.value) }}>
-          <option value="all">Všichni</option>
-          <option value="emailSent">Jen email odeslán</option>
-          <option value="emailNotSent">Jen email neodeslán</option>
-        </Select>
-      </FormControl>
+      <FilterAddressesActions addresses={addresses} setAddresses={setAddresses} />
 
       <Box height="35px">
         <Divider orientation="vertical" />
