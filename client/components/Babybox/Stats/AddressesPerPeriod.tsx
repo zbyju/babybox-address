@@ -1,6 +1,7 @@
 import { Address } from "../../../types/address";
 import { Stat, StatHelpText, StatLabel, StatNumber } from "@chakra-ui/react";
 import moment from "moment";
+import { countDistinctHours } from "../../../utils/stats";
 
 interface AddressesPerPeriodProp {
     title: string,
@@ -18,18 +19,13 @@ export default function AddressesPerPeriod({ title, addresses }: AddressesPerPer
             </Stat>
         )
     }
-    const start = moment(addresses[0].createdAt!)
-    const end = moment(addresses[addresses.length - 1].createdAt!)
-    const days = end.diff(start, "days")
-    const hours = end.diff(start, "hours")
-    //Substract time not in work from the hours (min is 1 to not divide by 0)
-    const time = Math.max(days > 1 ? hours - ((24 - hoursPerDay) * days) : hours, 1)
+    const numberOfDistinctHours = countDistinctHours(addresses)
     return (
         <Stat flex={0} minW="135px">
             <StatLabel>{title}</StatLabel>
             <StatNumber>{addresses.length} {addressLabelPlurality}</StatNumber>
             <StatHelpText>
-                {(addresses.length / time).toFixed(2)} adres/hod.
+                {(addresses.length / numberOfDistinctHours).toFixed(2)} adres/hod.
             </StatHelpText>
         </Stat>
     )
