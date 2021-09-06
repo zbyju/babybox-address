@@ -150,3 +150,7 @@ export const filterBySearch = (addresses: Array<Address>, searchTerm: string): A
         )
     })
 }
+
+export const getSalutation = (address: Address): string => {
+    return `${address.sex === "male" ? "Milý" : "Milá"} ${address.sex === "male" ? "pane" : "paní"} ${address.firstname5} ${address.lastname5},`
+}
