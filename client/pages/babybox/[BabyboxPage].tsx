@@ -15,7 +15,6 @@ export default function BabyboxPage() {
     return (
         <>
             <Heading>Babybox {babybox?.name ? babybox.name : handle}</Heading>
-            <BabyboxStats babyboxHandle={handle} />
 
             <Box bg="yellow.300" borderRadius={5} mt={5} boxShadow="lg">
                 <Box p={5}>
@@ -44,6 +43,8 @@ export default function BabyboxPage() {
                     </HStack>
                 </Box>
             </Box>
+
+            <BabyboxStats babyboxHandle={handle} />
         </>
     )
 }
