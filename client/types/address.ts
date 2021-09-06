@@ -14,11 +14,13 @@ export interface Address {
     postcode: string,
     createdAt?: Date,
     updatedAt?: Date,
-    flags?: {
-        isEmailSent?: boolean
-        isDonor?: boolean
-    },
+    flags?: AddressFlags,
     donated?: number
+}
+
+export interface AddressFlags {
+    isEmailSent?: boolean
+    isDonor?: boolean
 }
 
 export interface FormAddressItemError {

@@ -1,4 +1,4 @@
-import {Address, FormAddressError} from "../types/address";
+import {Address, AddressFlags, FormAddressError} from "../types/address";
 import {Babybox} from "../types/babybox";
 
 export const getDefaultBabybox = (): Babybox => {
@@ -24,6 +24,14 @@ export const getDefaultAddress = (): Address => {
         street: "",
         city: "",
         postcode: "",
+        flags: getDefaultAddressFlags()
+    }
+}
+
+export const getDefaultAddressFlags = (): AddressFlags => {
+    return {
+        isDonor: false,
+        isEmailSent: false,
     }
 }
 
