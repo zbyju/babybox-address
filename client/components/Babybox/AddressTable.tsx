@@ -1,5 +1,5 @@
 import { Address } from "../../types/address";
-import { IconButton, Button, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogBody, AlertDialogHeader, AlertDialogFooter, Table, Tbody, Td, Tfoot, Th, Thead, Tr, useToast, Tag } from "@chakra-ui/react";
+import { IconButton, Button, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogBody, AlertDialogHeader, AlertDialogFooter, Table, Tbody, Td, Tfoot, Th, Thead, Tr, useToast, Tag, Flex } from "@chakra-ui/react";
 import { prettyShortAddress, sexToCZ, shortFullname, shortHouseAddress } from "../../utils/address";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { useEffect, useRef, useState } from "react";
@@ -65,6 +65,7 @@ export default function AddressTable({ addresses, handle, address, editButton }:
                         <Th padding="5px">Společnost</Th>
                         <Th padding="5px">Email</Th>
                         <Th padding="5px">Adresa</Th>
+                        <Th padding="5px">Značky</Th>
                         <Th padding="5px">Akce</Th>
                     </Tr>
                 </Thead>
@@ -82,6 +83,15 @@ export default function AddressTable({ addresses, handle, address, editButton }:
                                 <Td padding="5px">{addr.company}</Td>
                                 <Td padding="5px">{addr.email}</Td>
                                 <Td padding="5px">{shortHouseAddress(addr)}</Td>
+                                <Td padding="5px">
+                                    <Flex gridGap="5px" wrap="wrap">
+                                        {addr.flags?.isDonor === true ? <Tag colorScheme="green">Dárce</Tag> : null}
+                                        {addr.flags?.isEmailSent === true ?
+                                            <Tag colorScheme="purple">Email odeslán</Tag> :
+                                            <Tag colorScheme="orange">Email neodeslán</Tag>
+                                        }
+                                    </Flex>
+                                </Td>
                                 <Td paddingLeft="5px">
                                     <IconButton aria-label="Smazat adresu" size="xs" mr="1" colorScheme="red" icon={<DeleteIcon />} onClick={() => setDeleteDialog({ open: true, address: addr })} />
                                     {editButton !== false ?
