@@ -141,8 +141,8 @@ export default function AddAddressForm({ babyboxHandle }: AddAddressFormProp) {
         }
         try {
             const result = await createAddress(address, babyboxHandle)
-            triggerDuplicates(babyboxHandle, address.company, address.email)
             resetForm()
+            setTimeout(() => triggerDuplicates(babyboxHandle, address.company, address.email), 1000)
             return toast({
                 title: "Adresa úspěšně přidána.",
                 description: `Byla přidána adresa ${prettyShortAddress(address)}`,
