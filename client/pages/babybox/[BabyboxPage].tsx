@@ -8,6 +8,7 @@ import useSWR from "swr";
 import { getBabyboxByHandle } from "../../api/babybox/getBabyboxes";
 import Link from "next/link"
 import moment from "moment";
+import { getFilename } from "../../utils/backup";
 
 export default function BabyboxPage() {
     const router = useRouter();
@@ -34,13 +35,13 @@ export default function BabyboxPage() {
                             </Link>
                         </ButtonGroup>
 
-                        <ButtonGroup spacing="0" size="sm">
+                        {/* <ButtonGroup spacing="0" size="sm">
                             <Button mt="5px" mr="10px" leftIcon={<InfoIcon />} isDisabled>Pokročilé statistiky</Button>
-                        </ButtonGroup>
+                        </ButtonGroup> */}
 
                         <ButtonGroup ml="0px" spacing="0" colorScheme="green" size="sm" color="white">
                             <a href={`data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(addresses))}`}
-                                download={`ZALOHA_${handle}_${moment().format("DDMMYY-HHmmss")}.json`}>
+                                download={getFilename("ZALOHA", handle, "json")}>
                                 <Button mt="5px" mr="10px" bg="green.900" leftIcon={<DownloadIcon />}>
                                     Stáhnout zálohu dat
                                 </Button>
