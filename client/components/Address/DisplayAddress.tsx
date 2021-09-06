@@ -1,5 +1,5 @@
 import { CopyIcon } from "@chakra-ui/icons";
-import { Box, Input, FormLabel, InputGroup, InputRightElement, Button, IconButton, useClipboard, HStack, FormControl } from "@chakra-ui/react"
+import { Box, Input, Checkbox, FormLabel, Heading, InputGroup, InputRightElement, Button, IconButton, useClipboard, HStack, FormControl } from "@chakra-ui/react"
 import { useEffect, useState } from "react";
 import { Address } from "../../types/address";
 import AddAddressForm from "../Babybox/AddAddressForm";
@@ -13,6 +13,7 @@ export default function DisplayAddress({ address }: DisplayAddressProps) {
     if (!address) return null
     return (
         <Box mb={3}>
+            <Heading size="md">Adresa</Heading>
             <HStack>
                 <FormControl minW="120px" flex={1}>
                     <FormLabel mb={0}>Titul před</FormLabel>
@@ -64,6 +65,13 @@ export default function DisplayAddress({ address }: DisplayAddressProps) {
                     <FormLabel mb={0}>PSČ</FormLabel>
                     <Input isReadOnly variant="filled" value={address.postcode} />
                 </FormControl>
+            </HStack>
+
+            <HStack mt={2}>
+                <FormLabel mb={0} mr={0} color="grey" fontWeight="400">Je dárcem?</FormLabel>
+                <Checkbox isDisabled isChecked={address.flags?.isDonor || false} />
+                <FormLabel mb={0} pl="5" mr={0} color="grey" fontWeight="400">Email odeslán?</FormLabel>
+                <Checkbox isDisabled isChecked={address.flags?.isEmailSent || false} />
             </HStack>
         </Box>
     )

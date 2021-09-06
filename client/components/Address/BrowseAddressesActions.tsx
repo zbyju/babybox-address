@@ -1,13 +1,14 @@
 import { CopyIcon } from "@chakra-ui/icons";
-import { Box, Select, Input, FormLabel, InputGroup, InputRightElement, Button, IconButton, useClipboard, HStack, FormControl } from "@chakra-ui/react"
+import { Box, Select, Input, FormLabel, InputGroup, InputRightElement, Button, IconButton, useClipboard, HStack, FormControl, Divider } from "@chakra-ui/react"
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Address } from "../../types/address";
 import AddAddressForm from "../Babybox/AddAddressForm";
 import EditAddressModal from "./EditAddressModal";
 import { EditIcon } from "@chakra-ui/icons"
+import { inverseDonor, inverseEmail, setDonor } from "../../api/address/putAddress";
 
 interface BrowseAddressesActionsProps {
-  address?: Address,
+  address: Address,
   handle: string,
   donorFilter: ["all" | "donor" | "notDonor", Dispatch<SetStateAction<any>>],
   emailFilter: ["all" | "emailSent" | "emailNotSent", Dispatch<SetStateAction<any>>],
@@ -42,9 +43,21 @@ export default function BrowseAddressesActions({ address, handle, donorFilter, e
         </Select>
       </FormControl>
 
+      <Box height="35px">
+        <Divider orientation="vertical" />
+      </Box>
+
+      <Button size="sm" isDisabled={!address}
+        color="gray.700" bg="yellow.100" _hover={{ bg: "yellow.200" }}
+        minW="140px" leftIcon={<EditIcon />} onClick={() => setEditDialog({ open: true, address })} >Editovat adresu</Button>
+
       <Button size="sm" isDisabled={!address}
         color="gray.700" bg="yellow.200" _hover={{ bg: "yellow.300" }}
-        minW="140px" leftIcon={<EditIcon />} onClick={() => setEditDialog({ open: true, address })} >Editovat adresu</Button>
+        minW="135px" onClick={() => inverseDonor(address)} >Označit jako dárce</Button>
+
+      <Button size="sm" isDisabled={!address}
+        color="gray.700" bg="yellow.300" _hover={{ bg: "yellow.400" }}
+        minW="115px" onClick={() => inverseEmail(address)} >Email odeslán</Button>
 
       <EditAddressModal address={editDialog.address} handle={handle} isOpen={editDialog.open} close={() => setEditDialog({ open: false })} />
     </HStack>
