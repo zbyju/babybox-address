@@ -1,4 +1,4 @@
-import { Button, Alert, AlertIcon, AlertTitle, AlertDescription, Heading, HStack, VStack, NumberInput, NumberInputField, NumberInputStepper, NumberDecrementStepper, NumberIncrementStepper, ListItem, Text, UnorderedList, Divider } from "@chakra-ui/react";
+import { Box, Button, Alert, AlertIcon, AlertTitle, AlertDescription, Heading, HStack, VStack, NumberInput, NumberInputField, NumberInputStepper, NumberDecrementStepper, NumberIncrementStepper, ListItem, Text, UnorderedList, Divider } from "@chakra-ui/react";
 import { ArrowForwardIcon, ArrowBackIcon } from "@chakra-ui/icons"
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -8,6 +8,7 @@ import DisplayAddressForEmail from "../../../../components/Address/DisplayAddres
 import BrowseAddressesActions from "../../../../components/Address/BrowseAddressesActions";
 import { add } from "lodash";
 import { filterByDonor, filterByEmail } from "../../../../utils/address";
+import { setEmailSent } from "../../../../api/address/putAddress";
 
 export default function BrowseAddresses() {
     const router = useRouter();
@@ -22,7 +23,7 @@ export default function BrowseAddresses() {
         if (addressesFiltered && index >= 1 && index <= addressesFiltered.length) setAddress(addressesFiltered[index - 1])
     }, [addressesFiltered, index])
     useEffect(() => {
-        console.log("setting to: ", filterByDonor(filterByEmail(addresses, emailFilter[0]), donorFilter[0]))
+        setIndex(1)
         setAddressesFiltered(filterByDonor(filterByEmail(addresses, emailFilter[0]), donorFilter[0]))
     }, [addresses, donorFilter[0], emailFilter[0]])
     const prevAddress = () => {
@@ -35,7 +36,7 @@ export default function BrowseAddresses() {
     }
     return (
         <>
-            <VStack justify="flex-start" alignItems="flex-start" mb="5">
+            <VStack justify="flex-start" alignItems="flex-start" mb="1">
                 <Heading mb="-3">Procházení adres</Heading>
                 {addressesFiltered?.length > 0 ?
                     <Heading size="sm" fontWeight="300">Adresa {index}/{addressesFiltered?.length}</Heading>
@@ -49,7 +50,9 @@ export default function BrowseAddresses() {
                     <DisplayAddress address={address} />
                     <DisplayAddressForEmail address={address} />
                     <HStack justify="space-between" mt={6}>
-                        <Button isDisabled={index == 1} colorScheme="blue" bg="blue.700" leftIcon={<ArrowBackIcon />} onClick={prevAddress}>Předchozí</Button>
+                        <Box flexGrow={1}>
+                            <Button isDisabled={index == 1} colorScheme="blue" bg="blue.700" leftIcon={<ArrowBackIcon />} onClick={prevAddress}>Předchozí</Button>
+                        </Box>
                         <NumberInput value={index} size="sm" maxW={24} min={1} max={addressesFiltered?.length || 1} onChange={(value) => setIndex(parseInt(value) || 0)}>
                             <NumberInputField />
                             <NumberInputStepper>
@@ -57,7 +60,16 @@ export default function BrowseAddresses() {
                                 <NumberDecrementStepper />
                             </NumberInputStepper>
                         </NumberInput>
-                        <Button isDisabled={index >= addressesFiltered?.length} colorScheme="blue" bg="blue.500" rightIcon={<ArrowForwardIcon />} onClick={nextAddress}>Další</Button>
+                        <Box display="flex" justifyContent="flex-end" flexGrow={1}>
+                            <Button mr={2}
+                                isDisabled={index >= addressesFiltered?.length}
+                                colorScheme="blue" bg="blue.500" rightIcon={<ArrowForwardIcon />}
+                                onClick={() => {
+                                    setEmailSent(address, true)
+                                    nextAddress()
+                                }}>Odesláno, další</Button>
+                            <Button isDisabled={index >= addressesFiltered?.length} colorScheme="blue" bg="blue.500" rightIcon={<ArrowForwardIcon />} onClick={nextAddress}>Další</Button>
+                        </Box>
                     </HStack>
                 </>
             ) : (
