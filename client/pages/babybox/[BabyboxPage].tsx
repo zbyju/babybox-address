@@ -38,7 +38,9 @@ export default function BabyboxPage() {
 
                         <ButtonGroup ml="0px" spacing="0" colorScheme="green" size="sm" color="white">
                             <Button mt="5px" mr="10px" bg="green.900" leftIcon={<DownloadIcon />}>Stáhnout zálohu dat</Button>
-                            <Button mt="5px" mr="10px" bg="green.700" leftIcon={<ArrowRightIcon />}>Exportovat data</Button>
+                            <Link href={`/babybox/address/export/${encodeURIComponent(handle)}`}>
+                                <Button mt="5px" mr="10px" bg="green.700" leftIcon={<ArrowRightIcon />}>Exportovat data</Button>
+                            </Link>
                         </ButtonGroup>
                     </HStack>
                 </Box>
