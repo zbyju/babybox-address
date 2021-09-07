@@ -1,5 +1,5 @@
 export const config = {
   api: {
-    baseUrl: "http://localhost:3010/api"
+    baseUrl: "http://address-backend.jurica-montel.cz/api/"
   }
 }

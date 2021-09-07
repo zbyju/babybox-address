@@ -5,9 +5,9 @@
   "main": "src/index.ts",
   "scripts": {
     "build": "tsc",
-    "start": "cross-env NODE_ENV=production PORT=3010 node ./build/src/index.js",
-    "dev": "cross-env NODE_ENV=development PORT=3010 ts-node ./src/index.ts",
-    "dev:nodemon": "cross-env NODE_ENV=development PORT=3010 nodemon -w src -e ts,json -x ts-node ./src/index.ts",
+    "start": "cross-env NODE_ENV=production PORT=5001 node ./build/src/index.js",
+    "dev": "cross-env NODE_ENV=development PORT=5001 ts-node ./src/index.ts",
+    "dev:nodemon": "cross-env NODE_ENV=development PORT=5001 nodemon -w src -e ts,json -x ts-node ./src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
