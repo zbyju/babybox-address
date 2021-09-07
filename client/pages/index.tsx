@@ -23,7 +23,7 @@ export default function Home() {
         <>
             <Flex alignItems="center" mb={5}>
                 <Heading mr={3}>Babyboxy</Heading>
-                <Link href="/babybox/add">
+                <Link href="/babybox/add" passHref>
                     <IconButton aria-label="Přidat babybox" mt={1} size="sm" icon={<AddIcon />} />
                 </Link>
             </Flex>

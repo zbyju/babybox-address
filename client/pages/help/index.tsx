@@ -52,7 +52,7 @@ export default function Babybo() {
             <Heading mt="5">Editování adresy</Heading>
             <Text>
                 <span>
-                    Editování adresy je možné po otevření Babyboxu -> Otevřít databázi adres, 
+                    Editování adresy je možné po otevření Babyboxu -{">"} Otevřít databázi adres,
                     nebo při přidávání adresy je možné editovat duplicitní adresu.
                     Po stisku modrého tlačítka se otevře formulář pro editaci, kde je možné adresu editovat. Po provedení změn je potřeba je uložit pomocí tlačítka Editovat.
                     Pomocí tlačítka <b>Resetovat formulář</b> je možné vrátit adresu do původního stavu. Pomocí tlačítka <b>Storno</b> je pak možné editování zrušit.

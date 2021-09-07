@@ -7,7 +7,7 @@ interface EditAddressModalProps {
   address?: Address,
   isOpen: boolean,
   handle: string,
-  close: Function
+  close: () => void
 }
 
 export default function EditAddressModal({ address, isOpen, handle, close }: EditAddressModalProps) {

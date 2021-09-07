@@ -35,13 +35,13 @@ export default function BabyboxCard({ babybox, starPressed }: BabyboxCardProps) 
             <Text>Počet adres: {addressCount}</Text>
             <Text>{note}</Text>
             <ButtonGroup mt={3} colorScheme="blue" spacing="2" size="sm" color="white">
-                <Link href={`/babybox/${encodeURIComponent(babybox.handle)}`}>
+                <Link href={`/babybox/${encodeURIComponent(babybox.handle)}`} passHref>
                     <Button bg="blue.900" pl={0} leftIcon={<ChevronLeftIcon w={6} h={6} />}>
                         Otevřít
                     </Button>
                 </Link>
 
-                <Link href={`/babybox/address/add/${encodeURIComponent(babybox.handle)}`}>
+                <Link href={`/babybox/address/add/${encodeURIComponent(babybox.handle)}`} passHref>
                     <Button bg="blue.700" leftIcon={<AddIcon />}>Přidat adresy</Button>
                 </Link>
             </ButtonGroup>

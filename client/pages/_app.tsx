@@ -6,7 +6,7 @@ import PageLayout from '../components/PageLayout'
 import axios from 'axios'
 import { SWRConfig } from 'swr'
 
-axios.defaults.baseURL = 'http://localhost:8080';
+axios.defaults.baseURL = 'http://localhost:3010/api';
 
 function App(props: AppProps) {
   return (

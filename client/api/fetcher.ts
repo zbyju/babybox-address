@@ -1,1 +1,1 @@
-export const fetcher = (resource, init) => fetch(resource, init).then(res => res.json())
+export const fetcher = (resource: any, init: any) => fetch(resource, init).then(res => res.json())

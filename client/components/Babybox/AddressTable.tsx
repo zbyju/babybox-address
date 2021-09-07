@@ -28,7 +28,7 @@ export default function AddressTable({ addresses, handle, address, editButton }:
     const [deleteDialog, setDeleteDialog] = useState<AddressDialog>({ open: false })
     const [editDialog, setEditDialog] = useState<AddressDialog>({ open: false })
     const [addressesFiltered, setAddressesFiltered] = useState<Array<Address>>(addresses)
-    const cancelRef = useRef()
+    const cancelRef = useRef(null)
     const toast = useToast()
     const deleteDialogClicked = async () => {
         if (!deleteDialog.address || !deleteDialog.address._id) return setDeleteDialog({ open: false })
@@ -135,7 +135,7 @@ export default function AddressTable({ addresses, handle, address, editButton }:
                         </AlertDialogBody>
 
                         <AlertDialogFooter>
-                            <Button ref={cancelRef} onClick={() => setDeleteDialog({ open: false })}>
+                            <Button onClick={() => setDeleteDialog({ open: false })}>
                                 Storno
                             </Button>
                             <Button colorScheme="red" onClick={deleteDialogClicked} ml={3}>
