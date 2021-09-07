@@ -5,8 +5,9 @@ import Nav from '../components/Navbar/Nav'
 import PageLayout from '../components/PageLayout'
 import axios from 'axios'
 import { SWRConfig } from 'swr'
+import { config } from '../config'
 
-axios.defaults.baseURL = 'http://localhost:3010/api';
+axios.defaults.baseURL = config.api.baseUrl || 'http://localhost:3010/api';
 
 function App(props: AppProps) {
   return (
