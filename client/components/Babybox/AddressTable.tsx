@@ -15,7 +15,8 @@ interface AddressTableProp {
     addresses: Array<Address>,
     handle: string,
     address?: Address,
-    editButton?: boolean
+    editButton?: boolean,
+    filtering?: boolean
 }
 
 interface AddressDialog {
@@ -24,7 +25,7 @@ interface AddressDialog {
 }
 
 
-export default function AddressTable({ addresses, handle, address, editButton }: AddressTableProp) {
+export default function AddressTable({ addresses, handle, address, editButton, filtering }: AddressTableProp) {
     const [deleteDialog, setDeleteDialog] = useState<AddressDialog>({ open: false })
     const [editDialog, setEditDialog] = useState<AddressDialog>({ open: false })
     const [addressesFiltered, setAddressesFiltered] = useState<Array<Address>>(addresses)
@@ -62,7 +63,7 @@ export default function AddressTable({ addresses, handle, address, editButton }:
     return (
         <>
             <HStack mb={4}>
-                <FilterAddressesActions addresses={addresses} setAddresses={setAddressesFiltered} showSearch={true} />
+                {filtering !== false && <FilterAddressesActions addresses={addresses} setAddresses={setAddressesFiltered} showSearch={true} />}
             </HStack>
 
 

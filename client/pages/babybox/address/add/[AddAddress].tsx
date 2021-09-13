@@ -30,7 +30,7 @@ export default function AddAddress() {
                 ) : !data ? (
                     <Text>Načítám adresy...</Text>
                 ) : (
-                    <AddressTable handle={handle} addresses={data.slice(0, 5)}/>
+                    <AddressTable filtering={false} handle={handle} addresses={data.slice(0, 5)}/>
                 )}
             </VStack>
         </>
