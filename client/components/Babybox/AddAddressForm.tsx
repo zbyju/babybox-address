@@ -90,25 +90,45 @@ export default function AddAddressForm({ babyboxHandle }: AddAddressFormProp) {
     }, [address])
 
     const getFirstnameCase5 = async (name: string) => {
-        if (name === "") return
+        if (name === "") return setAddress((prevAddress) => ({
+            ...prevAddress,
+            firstname5: ""
+        }))
         try {
             const result = await getFirstname(name)
-            if (result !== null && result.case5 && result.sex) setAddress((prevAddress) => ({
-                ...prevAddress,
-                firstname5: result.case5,
-                sex: result.sex
-            }))
+            if (result !== null && result.case5 && result.sex) {
+                setAddress((prevAddress) => ({
+                    ...prevAddress,
+                    firstname5: result.case5,
+                    sex: result.sex
+                }))
+            } else {
+                setAddress((prevAddress) => ({
+                    ...prevAddress,
+                    firstname5: ""
+                }))
+            }
         } catch (err) { console.log(err) }
     }
     const getLastnameCase5 = async (name: string) => {
-        if (name === "") return
+        if (name === "") return setAddress((prevAddress) => ({
+            ...prevAddress,
+            lastname5: ""
+        }))
         try {
             const result = await getLastname(name)
-            if (result !== null && result.case5 && result.sex) setAddress((prevAddress) => ({
-                ...prevAddress,
-                lastname5: result.case5,
-                sex: result.sex
-            }))
+            if (result !== null && result.case5 && result.sex) {
+                setAddress((prevAddress) => ({
+                    ...prevAddress,
+                    lastname5: result.case5,
+                    sex: result.sex
+                }))
+            } else {
+                setAddress((prevAddress) => ({
+                    ...prevAddress,
+                    lastname5: ""
+                }))
+            }
         } catch (err) { console.log(err) }
     }
 
@@ -298,7 +318,6 @@ export default function AddAddressForm({ babyboxHandle }: AddAddressFormProp) {
                 </HStack>
                 {duplicateContentJSX}
             </VStack>
-
         </Box>
 
     )
