@@ -9,7 +9,8 @@ export const findById = async (id: mongoose.Types.ObjectId): Promise<Address> =>
 
 export const findByBabybox = async (babyboxId: mongoose.Types.ObjectId): Promise<Array<Address>> => {
     return new Promise((resolve, reject) => {
-        AddressModel.find({ babyboxId: babyboxId }, (err: CallbackError, addresses: Array<Address>) => {
+        console.log('ytsdjkgh');
+        AddressModel.find({ babyboxId: babyboxId }).sort({'createdAt': -1}).exec((err: CallbackError, addresses: Array<Address>) => {
             if(err) reject(err)
             resolve(addresses)
         })
@@ -18,7 +19,8 @@ export const findByBabybox = async (babyboxId: mongoose.Types.ObjectId): Promise
 
 export const find = async (query: Object = {}): Promise<Array<Address>> => {
     return new Promise((resolve, reject) => {
-        AddressModel.find(query, (err: CallbackError, addresses: Array<Address>) => {
+        console.log('asdf');
+        AddressModel.find(query).sort({'createdAt': -1}).exec((err: CallbackError, addresses: Array<Address>) => {
             if(err) reject(err)
             resolve(addresses)
         })
