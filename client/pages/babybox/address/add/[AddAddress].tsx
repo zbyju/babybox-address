@@ -19,7 +19,7 @@ export default function AddAddress() {
                 ) : !data ? (
                     <Heading size="md">Načítám počet adres...</Heading>
                 ) : (
-                    <Heading size="md">Počet adres: {data.count}</Heading>
+                    <Heading size="md">Počet adres: {data.length}</Heading>
                 )}
             </HStack>
             <AddAddressForm babyboxHandle={handle} />
