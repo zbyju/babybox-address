@@ -151,6 +151,28 @@ export const filterBySearch = (addresses: Array<Address>, searchTerm: string): A
     })
 }
 
-export const getSalutation = (address: Address): string => {
-    return `${address.sex === "male" ? "Milý" : "Milá"} ${address.sex === "male" ? "pane" : "paní"} ${address.firstname5} ${address.lastname5},`
+export const getPresalutation = (address: Address): string => {
+    if(address.sex === "male") {
+        switch(address.titleInFront?.toLocaleLowerCase()) {
+            case "bc.":
+                return "bakaláři"
+            case "ing.":
+                return "inženýre"
+            default:
+                return "pane"
+        }
+    } else {
+        switch(address.titleInFront?.toLocaleLowerCase()) {
+            case "bc.":
+                return "bakalářko"
+            case "ing.":
+                return "inženýrko"
+            default:
+                return "paní"
+        }
+    }
+}
+
+export const getSalutation = (address: Address, customText?: string): string => {
+    return `${address.sex === "male" ? "Milý" : "Milá"} ${customText ? customText : getPresalutation(address)} ${address.lastname5},`
 }
