@@ -37,13 +37,13 @@ export default function BrowseAddressesActions({ address, handle, addresses, set
       <Button size="sm" isDisabled={!address}
         color="gray.700" bg="yellow.200" _hover={{ bg: "yellow.300" }}
         minW="135px" onClick={() => inverseDonor(address)} >
-          {address.flags?.isDonor === true ? "Označit jako nedárce" : "Označit jako dárce"}
+          {address?.flags?.isDonor === true ? "Označit jako nedárce" : "Označit jako dárce"}
       </Button>
 
       <Button size="sm" isDisabled={!address}
         color="gray.700" bg="yellow.300" _hover={{ bg: "yellow.400" }}
         minW="115px" onClick={() => inverseEmail(address)} >
-          {address.flags?.isEmailSent === true ? "Označit email neodeslán" : "Označit email odeslán"}
+          {address?.flags?.isEmailSent === true ? "Označit email neodeslán" : "Označit email odeslán"}
       </Button>
 
       <EditAddressModal address={editDialog.address} handle={handle} isOpen={editDialog.open} close={() => setEditDialog({ open: false })} />
