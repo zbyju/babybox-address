@@ -83,7 +83,7 @@ export default function AddressTable({ addresses, handle, address, editButton }:
                     {addressesFiltered?.map(addr => {
                         return (
                             <Tr key={addr.company}>
-                                <Td padding="5px">{moment(addr.createdAt).format("D.M.YY HH:mm:ss")}</Td>
+                                <Td padding="5px">{moment(addr.createdAt).format("D.M HH:mm:ss")}</Td>
                                 <Td padding="5px">{shortFullname(addr)}</Td>
                                 <Td padding="5px">{addr.sex === "male" ? (
                                     <Tag colorScheme="blue">Muž</Tag>
