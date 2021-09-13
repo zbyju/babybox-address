@@ -139,7 +139,7 @@ export default function AddressTable({ addresses, handle, address, editButton }:
                                 Storno
                             </Button>
                             <Button colorScheme="red" onClick={deleteDialogClicked} ml={3}>
-                                Delete
+                                Smazat
                             </Button>
                         </AlertDialogFooter>
                     </AlertDialogContent>
