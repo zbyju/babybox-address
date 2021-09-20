@@ -1,7 +1,4 @@
-import { Babybox } from '../../types/babybox'
-import { config } from '../../config'
 import { getRequest } from '../fetch'
-import { getDefaultBabybox } from '../../utils/defaultFactory'
 
 export const getAllBabyboxes = async () => {
     const result = await getRequest<any>("babybox")

@@ -9,7 +9,6 @@ export const findById = async (id: mongoose.Types.ObjectId): Promise<Address> =>
 
 export const findByBabybox = async (babyboxId: mongoose.Types.ObjectId): Promise<Array<Address>> => {
     return new Promise((resolve, reject) => {
-        console.log('ytsdjkgh');
         AddressModel.find({ babyboxId: babyboxId }).sort({'createdAt': -1}).exec((err: CallbackError, addresses: Array<Address>) => {
             if(err) reject(err)
             resolve(addresses)
