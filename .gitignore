@@ -1,3 +1,4 @@
 .idea/
 .vscode/
+.pnpm-debug.log
 config.json
