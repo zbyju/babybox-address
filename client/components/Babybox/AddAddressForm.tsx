@@ -209,7 +209,7 @@ export default function AddAddressForm({ babyboxHandle }: AddAddressFormProp) {
     const handleSexChange = (value: string) => updateAddress("sex", value)
     return (
         <Box>
-            <Progress colorScheme="green" size="sm" mt={5} value={progress} isAnimated />
+            <Progress colorScheme="green" size="sm" mt={2   } value={progress} isAnimated />
 
             <Heading size="md" mt={3} mb={0}>Osobní údaje</Heading>
 
