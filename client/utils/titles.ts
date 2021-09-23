@@ -1,3 +1,5 @@
+import { Address } from "../types/address"
+
 export const dokTitles = [
     "mudr", "mddr", "mvdr", "phdr", "judr", "rndr",
     "pharmdr", "thdr", "ph.d", "phd", "th.d", "thd"
