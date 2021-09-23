@@ -53,7 +53,6 @@ router.get(["/duplicate/:handle/:company/:email",
 })
 
 router.get("/:addressId", async (req, res) => {
-    console.log('sadf')
     const addressId = mongoose.Types.ObjectId(req.params.addressId)
     try {
         const address = await findById(addressId)
