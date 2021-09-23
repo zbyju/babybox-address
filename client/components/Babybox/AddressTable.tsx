@@ -9,6 +9,7 @@ import { triggerAddressesOfHandle, triggerDuplicates } from "../../api/triggers"
 import moment from "moment";
 import EditAddressModal from "../Address/EditAddressModal";
 import FilterAddressesActions from "../Address/FilterAddressesActions";
+import { inverseDonor, inverseEmail } from "../../api/address/putAddress";
 
 
 interface AddressTableProp {
@@ -103,17 +104,9 @@ export default function AddressTable({ addresses, handle, address, editButton, f
                                         }
                                     </Flex>
                                 </Td>
-                                <Td paddingLeft="5px">
+                                <Td paddingLeft="5px" minW="65px">
                                     <Tooltip label="Smazat adresu" placement="right">
                                         <IconButton aria-label="Smazat adresu" size="xs" mr="1" colorScheme="red" icon={<DeleteIcon />} onClick={() => setDeleteDialog({ open: true, address: addr })} />
-                                    </Tooltip>
-                                    <Tooltip label={addr.flags?.isEmailSent ? "Označit email neodeslán" : "Označit email odeslán"}
-                                        placement="right">
-                                        <IconButton aria-label="Email ne/odeslán" size="xs" mr="1" colorScheme="yellow" icon={<AtSignIcon />} onClick={() => setDeleteDialog({ open: true, address: addr })} />
-                                    </Tooltip>
-                                    <Tooltip label={addr.flags?.isDonor ? "Označit není dárce" : "Označit je dárce"}
-                                        placement="right">
-                                        <Button aria-label="Ne/dárce" size="xs" mr="1" colorScheme="yellow" onClick={() => setDeleteDialog({ open: true, address: addr })}>$</Button>
                                     </Tooltip>
                                     {editButton !== false ?
                                         <Tooltip label="Editovat adresu" placement="right">
@@ -122,6 +115,14 @@ export default function AddressTable({ addresses, handle, address, editButton, f
                                                 onClick={() => setEditDialog({ open: true, address: addr })} />
                                         </Tooltip>
                                     : null}
+                                    <Tooltip label={addr.flags?.isEmailSent ? "Označit email neodeslán" : "Označit email odeslán"}
+                                        placement="right">
+                                        <IconButton aria-label="Email ne/odeslán" size="xs" mr="1" colorScheme="yellow" icon={<AtSignIcon />} onClick={() => inverseEmail(addr)} />
+                                    </Tooltip>
+                                    <Tooltip label={addr.flags?.isDonor ? "Označit není dárce" : "Označit je dárce"}
+                                        placement="right">
+                                        <Button aria-label="Ne/dárce" size="xs" mr="1" colorScheme="yellow" onClick={() => inverseDonor(addr)}>$</Button>
+                                    </Tooltip>
                                 </Td>
                             </Tr>
                         )
