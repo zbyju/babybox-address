@@ -1,10 +1,12 @@
-import { Heading, HStack, ListItem, Text, UnorderedList, VStack } from "@chakra-ui/react";
+import { Heading, HStack, Button, ListItem, Text, UnorderedList, VStack } from "@chakra-ui/react";
+import {ChevronLeftIcon} from "@chakra-ui/icons"
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import { getAddressCount } from "../../../../api/address/getAddresses";
 import AddAddressForm from "../../../../components/Babybox/AddAddressForm"
 import AddressTable from "../../../../components/Babybox/AddressTable";
 import AddressesCountStat from "../../../../components/Babybox/Stats/AddressesCountStat";
+import Link from "next/link"
 
 export default function AddAddress() {
     const router = useRouter();
@@ -13,7 +15,14 @@ export default function AddAddress() {
     return (
         <>
             <HStack justify="space-between">
-                <Heading>Přidat adresu</Heading>
+                <VStack align="flex-start">
+                    <Heading mb="-3">Přidat adresu</Heading>
+                    <Link href={`/babybox/${encodeURIComponent(handle)}`} passHref>
+                        <Button size="sm" variant="ghost" colorScheme="blue" pl={0} leftIcon={<ChevronLeftIcon w={6} h={6} ml="-1" mr="-2" pt="2px"/>}>
+                            Zpět na rozcestník
+                        </Button>
+                    </Link>
+                </VStack>
                 {error ? (
                     <Heading size="md">Chyba při načítání počtu adres</Heading>
                 ) : !data ? (
