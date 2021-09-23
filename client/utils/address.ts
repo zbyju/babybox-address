@@ -1,4 +1,5 @@
 import {Address, FormAddressError, FormAddressItemError} from "../types/address";
+import { titleToSalutation } from "./titles";
 
 export const isValidAddress = (address: Address): boolean => {
     return (
@@ -152,5 +153,5 @@ export const filterBySearch = (addresses: Array<Address>, searchTerm: string): A
 }
 
 export const getSalutation = (address: Address): string => {
-    return `${address.sex === "male" ? "Milý" : "Milá"} ${address.sex === "male" ? "pane" : "paní"} ${address.firstname5} ${address.lastname5},`
+    return `${address.sex === "male" ? "Milý" : "Milá"} ${titleToSalutation(address)} ${address.lastname5},`
 }
