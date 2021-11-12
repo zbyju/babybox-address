@@ -1,7 +1,8 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
-import { ChakraProvider } from '@chakra-ui/react'
+import { ChakraProvider, Flex } from '@chakra-ui/react'
 import Nav from '../components/Navbar/Nav'
+import Footer from '../components/Navbar/Footer'
 import PageLayout from '../components/PageLayout'
 import axios from 'axios'
 import { SWRConfig } from 'swr'
@@ -13,8 +14,11 @@ function App(props: AppProps) {
   return (
     <SWRConfig value={{ fetcher: (url: string) => axios(url).then(r => r.data) }}>
       <ChakraProvider resetCSS={true}>
-        <Nav />
-        <PageLayout props={props} />
+        <Flex direction="column" minH="100vh">
+          <Nav />
+          <PageLayout props={props} />
+        </Flex>
+        <Footer />
       </ChakraProvider>
     </SWRConfig >
   )

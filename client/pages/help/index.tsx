@@ -60,6 +60,31 @@ export default function Babybo() {
                     Opět není možné editovat adresu tak, aby nově zeditovaná adresa byla duplicitní s jinou.
                 </span>
             </Text>
+
+
+            <Heading mt="5">Nahlášení chyby</Heading>
+            <Text>
+                <span>
+                    Na každé stránce úplně dole v zápatí je odkaz na formulář pro nahlašování chyb.
+                    V tomto formuláři se stačí řídit postupem, který je u něj napsaný.
+                </span>
+            </Text>
+            <Text>
+                <span>
+                    Je tedy potřeba vyplnit tato pole:
+                    <UnorderedList ml={10}>
+                        <ListItem><b>Issue Title</b> - Pár slovy popsat problém</ListItem>
+                        <ListItem><b>Details</b> - Podrobně popsat problém. Pokud se jedná o problém, který nastavá při nějaké opakované činnosti (např. nelze přidat nějaká adresa) je dobré do tohoto pole napsat, jak k chybě dochází a jak tuto chybu replikovat (jakým postupem chybu znovu vyvolat - např. jak vyplnit jednotlivá pole přidávání adres, aby došlo k chybě).</ListItem>
+                        <ListItem>CATPCHA - Na konci formuláře je CAPTCHA - obrázek s políčkem, do kterého je potřeba opsat znaky, které jsou na obrázku.</ListItem>
+                    </UnorderedList>
+                    Celý formulář se pak odešle pomocí tlačítka <b>Submit</b>. Poté je možné tuto záložku s formulářem zavřít.
+                </span>
+            </Text>
+            <Text mt={2}>
+                <span>
+                    Tímto způsobem je vhodné nahlašovat chyby, které jsou závážné, ale i úplné detaily, jako je například nějaký překlep v textu aplikaci atd. Tento postup je také vhodný pro navrhnutí vylepšení pro tuto aplikaci, nebo požádání o změnu.
+                </span>
+            </Text>
         </Box>
     )
 }

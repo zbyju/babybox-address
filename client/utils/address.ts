@@ -1,4 +1,4 @@
-import {Address, FormAddressError, FormAddressItemError} from "../types/address";
+import { Address, FormAddressError, FormAddressItemError } from "../types/address";
 
 export const isValidAddress = (address: Address): boolean => {
     return (

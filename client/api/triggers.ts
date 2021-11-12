@@ -50,8 +50,6 @@ export const getKeysIncluding = (s: string) => {
 export const triggerAllIncluding = (urls: Array<string>) => {
   urls.forEach(x => {
     getKeysIncluding(x).forEach(k => {
-      console.log("Triggering: ", k);
-
       trigger(k)
     })
   })
@@ -59,7 +57,6 @@ export const triggerAllIncluding = (urls: Array<string>) => {
 
 export const triggerAll = (urls: Array<string>) => {
   urls.forEach(x => {
-    console.log('Triggering: ', x);
     trigger(x)
   })
 }

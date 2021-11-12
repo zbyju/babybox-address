@@ -1,7 +1,7 @@
 import { Address } from "../../types/address";
-import { IconButton, Button, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogBody, AlertDialogHeader, AlertDialogFooter, Table, Tbody, Td, Tfoot, Th, Thead, Tr, useToast, Tag, Flex, HStack } from "@chakra-ui/react";
+import { IconButton, Button, Tooltip, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogBody, AlertDialogHeader, AlertDialogFooter, Table, Tbody, Td, Tfoot, Th, Thead, Tr, useToast, Tag, Flex, HStack } from "@chakra-ui/react";
 import { prettyShortAddress, sexToCZ, shortFullname, shortHouseAddress } from "../../utils/address";
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { DeleteIcon, EditIcon, AtSignIcon } from "@chakra-ui/icons";
 import { useEffect, useRef, useState } from "react";
 import { deleteAddress } from "../../api/address/deleteAddress"
 import { mutate, trigger } from "swr";
@@ -9,6 +9,7 @@ import { triggerAddressesOfHandle, triggerDuplicates } from "../../api/triggers"
 import moment from "moment";
 import EditAddressModal from "../Address/EditAddressModal";
 import FilterAddressesActions from "../Address/FilterAddressesActions";
+import { inverseDonor, inverseEmail } from "../../api/address/putAddress";
 
 
 interface AddressTableProp {
@@ -103,13 +104,27 @@ export default function AddressTable({ addresses, handle, address, editButton, f
                                         }
                                     </Flex>
                                 </Td>
-                                <Td paddingLeft="5px">
-                                    <IconButton aria-label="Smazat adresu" size="xs" mr="1" colorScheme="red" icon={<DeleteIcon />} onClick={() => setDeleteDialog({ open: true, address: addr })} />
-                                    {editButton !== false ?
-                                        <IconButton aria-label="Editovat adresu" size="xs" colorScheme="blue"
-                                            icon={<EditIcon />}
-                                            onClick={() => setEditDialog({ open: true, address: addr })} />
+                                <Td paddingLeft="5px" minW="58px">
+                                    <Flex direction="row" wrap="wrap" gap="1px"  mt="-1" justify="space-between">
+                                        <Tooltip label="Smazat adresu" placement="right">
+                                            <IconButton aria-label="Smazat adresu" mt="1" size="xs" colorScheme="red" icon={<DeleteIcon />} onClick={() => setDeleteDialog({ open: true, address: addr })} />
+                                        </Tooltip>
+                                        {editButton !== false ?
+                                            <Tooltip label="Editovat adresu" placement="right">
+                                                <IconButton aria-label="Editovat adresu" mt="1" size="xs" colorScheme="blue"
+                                                    icon={<EditIcon />}
+                                                    onClick={() => setEditDialog({ open: true, address: addr })} />
+                                            </Tooltip>
                                         : null}
+                                        <Tooltip label={addr.flags?.isEmailSent ? "Označit email neodeslán" : "Označit email odeslán"}
+                                            placement="right">
+                                            <IconButton aria-label="Email ne/odeslán" mt="1" size="xs" colorScheme="yellow" icon={<AtSignIcon />} onClick={() => inverseEmail(addr)} />
+                                        </Tooltip>
+                                        <Tooltip label={addr.flags?.isDonor ? "Označit není dárce" : "Označit je dárce"}
+                                            placement="right">
+                                            <Button aria-label="Ne/dárce" size="xs" mt="1" colorScheme="yellow" onClick={() => inverseDonor(addr)}>$</Button>
+                                        </Tooltip>
+                                    </Flex>
                                 </Td>
                             </Tr>
                         )
