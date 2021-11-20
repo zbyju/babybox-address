@@ -1,5 +1,5 @@
-import {CallbackError, EnforceDocument, Model} from "mongoose";
-import { Name } from '../../types/names.types'
+import { CallbackError, Model } from "mongoose";
+import { Name } from '../../types/names.types';
 
 export const find = async (query: Object = {}, model: Model<Name>): Promise<Array<Name>> => {
     return new Promise((resolve, reject) => {
@@ -14,7 +14,6 @@ export const findOne = async (query: Object, model: Model<Name>): Promise<Name |
     return new Promise((resolve, reject) => {
         model.find(query, (err: CallbackError, names: Array<Name>) => {
             if(err) reject(err)
-            console.log(names)
             if(names === undefined){
                 resolve({})
             } else {

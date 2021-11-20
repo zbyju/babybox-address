@@ -45,7 +45,6 @@ export const titleToSalutation = (address: Address): string => {
     let res = ""
     titleGroups.forEach(group => {
         group.dict.forEach(t => {
-            console.log(title, t)
             if(!res && title.includes(t))
                 res = address.sex === "male" ? group.male : group.female
         })

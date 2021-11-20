@@ -1,7 +1,7 @@
-import mongoose, {CallbackError} from "mongoose";
-import { Address } from '../types/address.types'
-import { AddressModel } from '../models/addressModel'
-import { findById as babyboxFindById } from "./babyboxDto"
+import mongoose, { CallbackError } from "mongoose";
+import { AddressModel } from '../models/addressModel';
+import { Address } from '../types/address.types';
+import { findById as babyboxFindById } from "./babyboxDto";
 
 export const findById = async (id: mongoose.Types.ObjectId): Promise<Address> => {
     return findOne({ _id: id })
@@ -18,7 +18,6 @@ export const findByBabybox = async (babyboxId: mongoose.Types.ObjectId): Promise
 
 export const find = async (query: Object = {}): Promise<Array<Address>> => {
     return new Promise((resolve, reject) => {
-        console.log('asdf');
         AddressModel.find(query).sort({'createdAt': -1}).exec((err: CallbackError, addresses: Array<Address>) => {
             if(err) reject(err)
             resolve(addresses)
