@@ -1,5 +1,5 @@
+import moment from "moment";
 import { Address } from "../types/address";
-import moment from "moment"
 
 
 export const timeFilterAddress = (addresses: Array<Address>, start: moment.Moment, end: moment.Moment): Array<Address> => {
@@ -11,7 +11,7 @@ export const timeFilterAddress = (addresses: Array<Address>, start: moment.Momen
 }
 
 export const yesterdayAddresses = (addresses: Array<Address>): Array<Address> => {
-  return timeFilterAddress(addresses, moment().subtract(1, "days"), moment().subtract(1, "days").endOf("day"))
+  return timeFilterAddress(addresses, moment().startOf("day").subtract(1, "days"), moment().startOf("day").subtract(1, "days").endOf("day"))
 }
 
 export const todayAddresses = (addresses: Array<Address>): Array<Address> => {
@@ -19,11 +19,12 @@ export const todayAddresses = (addresses: Array<Address>): Array<Address> => {
 }
 
 export const thisWeek = (addresses: Array<Address>): Array<Address> => {
-  return timeFilterAddress(addresses, moment().startOf("week").isoWeek(1), moment().endOf("day"))
+  console.log(moment().startOf("week").toString())
+  return timeFilterAddress(addresses, moment().startOf("week"), moment().endOf("day"))
 }
 
 export const lastWeek = (addresses: Array<Address>): Array<Address> => {
-  return timeFilterAddress(addresses, moment().startOf("week").isoWeek(1).subtract(7, "days"), moment().endOf("week").subtract(7, "days"))
+  return timeFilterAddress(addresses, moment().startOf("week").subtract(7, "days"), moment().endOf("week").subtract(7, "days"))
 }
 
 export const thisMonth = (addresses: Array<Address>): Array<Address> => {
