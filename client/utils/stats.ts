@@ -19,12 +19,11 @@ export const todayAddresses = (addresses: Array<Address>): Array<Address> => {
 }
 
 export const thisWeek = (addresses: Array<Address>): Array<Address> => {
-  console.log(moment().startOf("week").toString())
-  return timeFilterAddress(addresses, moment().startOf("week"), moment().endOf("day"))
+  return timeFilterAddress(addresses, moment().startOf("isoWeek"), moment().endOf("day"))
 }
 
 export const lastWeek = (addresses: Array<Address>): Array<Address> => {
-  return timeFilterAddress(addresses, moment().startOf("week").subtract(7, "days"), moment().endOf("week").subtract(7, "days"))
+  return timeFilterAddress(addresses, moment().startOf("isoWeek").subtract(7, "days"), moment().endOf("isoWeek").subtract(7, "days"))
 }
 
 export const thisMonth = (addresses: Array<Address>): Array<Address> => {
