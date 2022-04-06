@@ -189,6 +189,7 @@ export const getTitleSalutation = (address: Address): string => {
            titles.includes("mga")) return "magistro"
         if(titles.includes("bc")) return "bakalářko"
     }
+    return ""
 }
 
 export const getGenderSalutation = (address: Address): string => {
