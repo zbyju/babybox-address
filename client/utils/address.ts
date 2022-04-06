@@ -151,26 +151,58 @@ export const filterBySearch = (addresses: Array<Address>, searchTerm: string): A
     })
 }
 
-export const getPresalutation = (address: Address): string => {
+export const getTitleSalutation = (address: Address): string => {
+    const tf = address.titleInFront || ""
+    const tb = address.titleInFront || ""
+    const titles = (tf + tb).toLowerCase()
+    if(titles === "") return ""
     if(address.sex === "male") {
-        switch(address.titleInFront?.toLocaleLowerCase()) {
-            case "bc.":
-                return "bakaláři"
-            case "ing.":
-                return "inženýre"
-            default:
-                return "pane"
-        }
+        if(titles.includes("prof")) return "profesore"
+        if(titles.includes("doc")) return "docente"
+        if(titles.includes("phd")  ||
+           titles.includes("mudr") ||
+           titles.includes("mvdr") ||
+           titles.includes("mddr") ||
+           titles.includes("pharmdr") ||
+           titles.includes("judr") ||
+           titles.includes("thdr") ||
+           titles.includes("drsc")) return "doktore"
+        if(titles.includes("ing")) return "inženýre"
+        if(titles.includes("mgr") ||
+           titles.includes("phmr")||
+           titles.includes("mga")) return "magistře"
+        if(titles.includes("bc")) return "bakaláři"
     } else {
-        switch(address.titleInFront?.toLocaleLowerCase()) {
-            case "bc.":
-                return "bakalářko"
-            case "ing.":
-                return "inženýrko"
-            default:
-                return "paní"
-        }
+        if(titles.includes("prof")) return "profesorko"
+        if(titles.includes("doc")) return "docentko"
+        if(titles.includes("phd")  ||
+           titles.includes("mudr") ||
+           titles.includes("mvdr") ||
+           titles.includes("mddr") ||
+           titles.includes("pharmdr") ||
+           titles.includes("judr") ||
+           titles.includes("thdr") ||
+           titles.includes("drsc")) return "doktorko"
+        if(titles.includes("ing")) return "inženýrko"
+        if(titles.includes("mgr") ||
+           titles.includes("phmr")||
+           titles.includes("mga")) return "magistro"
+        if(titles.includes("bc")) return "bakalářko"
     }
+}
+
+export const getGenderSalutation = (address: Address): string => {
+    if(address.sex === "male") {
+        return "pane"
+    } else {
+        return "paní"
+    }
+}
+
+export const getPresalutation = (address: Address): string => {
+    const titleSal = getTitleSalutation(address)
+    if(titleSal === "") return getGenderSalutation(address)
+    else return getGenderSalutation(address) + " " + getTitleSalutation(address)
 }
 
 export const getSalutation = (address: Address, customText?: string): string => {
