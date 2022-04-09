@@ -19,6 +19,7 @@ const schema = new Schema<Address>({
     flags: {
         isEmailSent: { type: Boolean, default: false },
         isDonor: { type: Boolean, default: false },
+        isMayor: { type: Boolean, default: false },
     },
     donated: { type: Number }
 }, { timestamps: true });
