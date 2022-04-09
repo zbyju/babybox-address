@@ -72,6 +72,8 @@ export default function DisplayAddress({ address }: DisplayAddressProps) {
                 <Checkbox isDisabled isChecked={address.flags?.isDonor || false} />
                 <FormLabel mb={0} pl="5" mr={0} color="grey" fontWeight="400">Email odeslán?</FormLabel>
                 <Checkbox isDisabled isChecked={address.flags?.isEmailSent || false} />
+                <FormLabel mb={0} pl="5" mr={0} color="grey" fontWeight="400">Je starostou?</FormLabel>
+                <Checkbox isDisabled isChecked={address.flags?.isMayor || false} />
             </HStack>
         </Box>
     )

@@ -51,7 +51,7 @@ export default function FilterAddressesActions({ addresses, setAddresses, showSe
       </FormControl>
 
       <FormControl id="selectEmailSent">
-        <FormLabel fontSize="sm" mb={0}>Filtr dárci</FormLabel>
+        <FormLabel fontSize="sm" mb={0}>Filtr email</FormLabel>
         <Select size="sm" onChange={(event) => { setEmailFilter((event.target.value as emailFilterType))}}>
           <option value="all">Všichni</option>
           <option value="emailSent">Jen email odeslán</option>

@@ -21,6 +21,7 @@ export interface Address {
 export interface AddressFlags {
     isEmailSent?: boolean
     isDonor?: boolean
+    isMayor?: boolean
 }
 
 export interface FormAddressItemError {

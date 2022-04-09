@@ -152,6 +152,9 @@ export const filterBySearch = (addresses: Array<Address>, searchTerm: string): A
 }
 
 export const getTitleSalutation = (address: Address): string => {
+    if(address.flags?.isMayor === true) {
+        return address.sex === "male" ? "starosto" : "starostko"
+    }
     const tf = address.titleInFront || ""
     const tb = address.titleInFront || ""
     const titles = (tf + tb).toLowerCase()
