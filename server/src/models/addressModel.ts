@@ -27,7 +27,16 @@ const schema = new Schema<Address>(
   { timestamps: true }
 );
 
-schema.index({ babyboxId: 1, email: 1 }, { unique: true, sparse: true });
+// ALlow null emails, but if there is some email then it must be unique
+schema.index(
+  { babyboxId: 1, email: 1 },
+  {
+    unique: true,
+    partialFilterExpression: {
+      email: { $type: "string" },
+    },
+  }
+);
 schema.index({ babyboxId: 1, company: 1 }, { unique: true });
 
 export const AddressModel = model<Address>("Address", schema);
