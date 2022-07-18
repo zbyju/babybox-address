@@ -27,7 +27,7 @@ const schema = new Schema<Address>(
   { timestamps: true }
 );
 
-schema.index({ babyboxId: 1, email: 1 }, { unique: true });
+schema.index({ babyboxId: 1, email: 1 }, { unique: true, sparse: true });
 schema.index({ babyboxId: 1, company: 1 }, { unique: true });
 
 export const AddressModel = model<Address>("Address", schema);
