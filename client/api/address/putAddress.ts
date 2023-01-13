@@ -26,11 +26,31 @@ export const inverseEmail = (address: Address) => {
   return setEmailSent(address, newIsEmailSent)
 }
 
+export const inverseMayor = (address: Address) => {
+  const newIsMayor = address.flags?.isMayor === true ? false : true
+  triggerAddress(address._id!)
+  return setMayor(address, newIsMayor)
+}
+
 export const setDonor = (address: Address, isDonor: boolean) => {
   const flags = address.flags || getDefaultAddressFlags()
   flags.isDonor = isDonor
   address.flags = flags
   if(!isDonor && address.donated) delete address.donated
+  return new Promise(async (resolve, reject) => {
+    try {
+      await apiRequest<Address>("address/" + address._id, "PUT", address)
+      resolve(address)
+    } catch(err) {
+      reject(err)
+    }
+  })
+}
+
+export const setMayor = (address: Address, isMayor: boolean) => {
+  const flags = address.flags || getDefaultAddressFlags()
+  flags.isMayor = isMayor
+  address.flags = flags
   return new Promise(async (resolve, reject) => {
     try {
       await apiRequest<Address>("address/" + address._id, "PUT", address)

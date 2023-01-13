@@ -32,6 +32,7 @@ export const getDefaultAddressFlags = (): AddressFlags => {
     return {
         isDonor: false,
         isEmailSent: false,
+        isMayor: false,
     }
 }
 

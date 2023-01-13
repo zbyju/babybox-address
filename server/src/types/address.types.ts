@@ -16,4 +16,10 @@ export interface Address {
     city: string,
     postcode: string,
     babyboxId: PopulatedDoc<Babybox & Document>,
+    flags?: {
+        isEmailSent: boolean,
+        isDonor: boolean,
+        isMayor: boolean,
+    },
+    donated?: number
 }

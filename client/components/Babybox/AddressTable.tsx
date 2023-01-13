@@ -1,7 +1,7 @@
 import { Address } from "../../types/address";
 import { IconButton, Button, Tooltip, AlertDialog, AlertDialogOverlay, AlertDialogContent, AlertDialogBody, AlertDialogHeader, AlertDialogFooter, Table, Tbody, Td, Tfoot, Th, Thead, Tr, useToast, Tag, Flex, HStack } from "@chakra-ui/react";
 import { prettyShortAddress, sexToCZ, shortFullname, shortHouseAddress } from "../../utils/address";
-import { DeleteIcon, EditIcon, AtSignIcon } from "@chakra-ui/icons";
+import { DeleteIcon, EditIcon, AtSignIcon, StarIcon } from "@chakra-ui/icons";
 import { useEffect, useRef, useState } from "react";
 import { deleteAddress } from "../../api/address/deleteAddress"
 import { mutate, trigger } from "swr";
@@ -9,7 +9,7 @@ import { triggerAddressesOfHandle, triggerDuplicates } from "../../api/triggers"
 import moment from "moment";
 import EditAddressModal from "../Address/EditAddressModal";
 import FilterAddressesActions from "../Address/FilterAddressesActions";
-import { inverseDonor, inverseEmail } from "../../api/address/putAddress";
+import { inverseDonor, inverseEmail, inverseMayor } from "../../api/address/putAddress";
 
 
 interface AddressTableProp {
@@ -102,10 +102,11 @@ export default function AddressTable({ addresses, handle, address, editButton, f
                                             <Tag colorScheme="purple">Email odeslán</Tag> :
                                             <Tag colorScheme="orange">Email neodeslán</Tag>
                                         }
+                                        {addr.flags?.isMayor === true ? <Tag colorScheme="teal">Starosta</Tag>:null}
                                     </Flex>
                                 </Td>
-                                <Td paddingLeft="5px" minW="58px">
-                                    <Flex direction="row" wrap="wrap" gap="1px"  mt="-1" justify="space-between">
+                                <Td paddingLeft="5px" minW="58px" maxW="120px">
+                                    <Flex direction="row" wrap="wrap"  mt="-1" justify="flex-start">
                                         <Tooltip label="Smazat adresu" placement="right">
                                             <IconButton aria-label="Smazat adresu" mt="1" size="xs" colorScheme="red" icon={<DeleteIcon />} onClick={() => setDeleteDialog({ open: true, address: addr })} />
                                         </Tooltip>
@@ -123,6 +124,10 @@ export default function AddressTable({ addresses, handle, address, editButton, f
                                         <Tooltip label={addr.flags?.isDonor ? "Označit není dárce" : "Označit je dárce"}
                                             placement="right">
                                             <Button aria-label="Ne/dárce" size="xs" mt="1" colorScheme="yellow" onClick={() => inverseDonor(addr)}>$</Button>
+                                        </Tooltip>
+                                        <Tooltip label={addr.flags?.isMayor ? "Označit není starosta" : "Označit je starosta"}
+                                            placement="right">
+                                            <IconButton aria-label="Ne/starosta" size="xs" mt="1" colorScheme="yellow" onClick={() => inverseMayor(addr)} icon={<StarIcon />} />
                                         </Tooltip>
                                     </Flex>
                                 </Td>
