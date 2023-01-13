@@ -2,3 +2,4 @@
 .vscode/
 .pnpm-debug.log
 config.json
+.DS_Store
